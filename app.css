@@ -173,7 +173,7 @@ transform-origin:20% 0;transform:scale(.6);opacity:0;transition:transform .3s va
 .endb{background:#3a1a1a;color:#ff453a;font-weight:700;font-size:15px;padding:7px 16px;border-radius:16px}
 .tm{font-size:15px;color:var(--gray);font-weight:600}
 .elab{font-size:13px;color:var(--gray);text-transform:uppercase;letter-spacing:.3px;margin:10px 22px -4px;font-weight:600}
-.clock{font-size:56px;font-weight:800;color:var(--acc);font-variant-numeric:tabular-nums;margin:6px 20px 0;letter-spacing:-1px}
+.clock{font-size:56px;font-weight:800;color:var(--acc);font-variant-numeric:tabular-nums;margin:6px 20px 0;letter-spacing:-1px}.clock+.cur{margin-top:18px}
 .wn{font-size:17px;color:var(--gray);margin:0 20px 16px;font-weight:600}
 .cur{background:var(--card);border-radius:18px;margin:0 16px 10px;padding:14px}
 .ch{display:flex;align-items:center;gap:12px;margin-bottom:10px}.ch .ic{width:44px;height:44px;border-radius:10px}

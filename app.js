@@ -401,7 +401,6 @@ function liveHTML(L){
   const doneEx=lv.ex.filter(e=>e.sets.every(s=>s.done)).length;
   return `<div class="tb"><div class="tm">${esc(w.name)}</div><div class="endb" data-a="liveEnd">End</div></div>
   <div class="scroll"><div class="elab">Elapsed</div><div class="clock" id="clk">${fmtClock(Date.now()-lv.start)}</div>
-  <div class="wn">${fin?'All exercises done':`Exercise ${lv.cur+1} of ${n}${doneEx?` · ${doneEx} done`:''}`}</div>
   <div class="cur" data-k="${lv.cur}"><div class="ch"><div class="ic" ${exBg(ex)}></div><div class="t"><div class="n">${esc(ex.name)}</div><div class="m">${c.last?'Last time '+c.last:'First time — go by feel'}</div></div></div>${sets}</div>
   ${others}
   ${fin?`<div class="bottombar" style="position:relative;background:none;padding-top:8px"><div class="start" data-a="liveFinish">Finish Workout</div></div>`:''}

@@ -449,7 +449,7 @@ function liveHTML(L){
   if(WIDE){
     const side=[lv.cur,...orderRows(lv,exFin)].map(i=>{const e=lv.ex[i],x=LIB(e.exId),dn=e.sets.every(s=>s.done);
       return `<div class="w sw ${i===lv.cur?'sel':''} ${dn?'fin':''}" data-k="${i}" data-a="liveSwitch" data-i="${i}"><div class="ic" ${exBg(x)}></div><div class="t"><div class="n">${esc(x.name)}</div><div class="m">${sub(e)}</div></div>${dn?'<div class="chk">✓</div>':''}</div>`}).join('');
-    return `<div class="shell"><div class="side scroll"><div class="elab">Elapsed</div><div class="clock" id="clk">${fmtClock(Date.now()-lv.start)}</div><div class="wn">${wn}</div><div class="swl">${side}</div></div>
+    return `<div class="shell"><div class="side scroll"><div class="elab">Elapsed</div><div class="clock" id="clk">${fmtClock(Date.now()-lv.start)}</div><div class="swl">${side}</div></div>
     <div class="main"><div class="tbar"><div class="tm">${esc(w.name)}</div><div class="endb" data-a="liveEnd">End</div></div>
     <div class="scroll"><div class="pane"><div class="cur" data-k="${lv.cur}">${curHead}${sets}</div>${fin?`<div class="start fin" data-a="liveFinish">Finish Workout</div>`:''}</div></div>${rest}</div></div>`;
   }
@@ -458,7 +458,6 @@ function liveHTML(L){
     <div class="m">${sub(e)}</div></div>${dn?'<div class="chk">✓</div>':'<span style="color:#48484a;font-size:20px">›</span>'}</div>`}).join('');
   return `<div class="tb"><div class="tm">${esc(w.name)}</div><div class="endb" data-a="liveEnd">End</div></div>
   <div class="scroll"><div class="elab">Elapsed</div><div class="clock" id="clk">${fmtClock(Date.now()-lv.start)}</div>
-  <div class="wn">${wn}</div>
   <div class="cur" data-k="${lv.cur}">${curHead}${sets}</div>
   ${others}
   ${fin?`<div class="bottombar" style="position:relative;background:none;padding-top:8px"><div class="start" data-a="liveFinish">Finish Workout</div></div>`:''}

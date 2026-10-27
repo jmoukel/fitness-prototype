@@ -48,7 +48,7 @@ html.wide{--sat:0px;--sab:0px}
 
 /* live (desktop) */
 .wide .side .elab{margin:0 8px 6px}
-.wide .side .clock{font-size:64px;margin:0 8px}
+.wide .side .clock{font-size:64px;margin:0 8px 14px}
 .wide .side .wn{margin:8px 8px 26px}
 .wide .side .w.fin .ic{opacity:.55}.wide .side .w.fin .n{color:#aeaeb2}
 .wide .side .w .m{font-size:13px;font-variant-numeric:tabular-nums}
