@@ -365,13 +365,11 @@ function profHTML(L){
   const bestTxt=best?(bw?`${best.r}<small> reps</small>`:`${best.w}<small> lb</small> × ${best.r}`):'—';
   if(WIDE)return `<div class="nav"><div class="b" data-a="back"><span>‹</span>${esc(L.backLabel)}</div><div class="star ${fav?'':'off'}" data-a="fav">${fav?'★':'☆'}</div></div>
   <div class="pgrid"><div class="pl"><div class="pimg" ${exBg(e)}>${demoBtn(e,'-w')}</div><div class="pt">${esc(e.name)}</div>
-  <div class="tags"><span>${EQ[e.equip].label}</span><span>${e.muscle}</span>${(e.also||[]).map(a=>`<span>${esc(a)}</span>`).join('')}</div>
   <div class="cards"><div class="cd"><div class="l">Best Set</div><div class="v">${bestTxt}</div></div><div class="cd"><div class="l">Sessions</div><div class="v">${hist.length}</div></div></div></div>
   <div class="pr scroll"><div class="sect">History</div><div class="list hist">${histRows}</div></div></div>
   ${L.addL?`<div class="bottombar"><div class="start ${added?'ghost':''}" data-a="profAdd">${added?'✓ Added to Workout':'+ Add to Workout'}</div></div>`:''}`;
   return `<div class="nav"><div class="b" data-a="back"><span>‹</span>${esc(L.backLabel)}</div><div class="star ${fav?'':'off'}" data-a="fav">${fav?'★':'☆'}</div></div>
   <div class="scroll"><div class="pimg" ${exBg(e)}>${demoBtn(e)}</div><div class="pt">${esc(e.name)}</div>
-  <div class="tags"><span>${EQ[e.equip].label}</span><span>${e.muscle}</span>${(e.also||[]).map(a=>`<span>${esc(a)}</span>`).join('')}</div>
   <div class="cards"><div class="cd"><div class="l">Best Set</div><div class="v">${best?(bw?`${best.r}<small> reps</small>`:`${best.w}<small> lb</small> × ${best.r}`):'—'}</div></div>
   <div class="cd"><div class="l">Sessions</div><div class="v">${hist.length}</div></div></div>
   <div class="sect" style="margin-top:22px">History</div>

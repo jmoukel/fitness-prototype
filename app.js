@@ -325,7 +325,6 @@ function profHTML(L){
   const added=L.addL&&L.addL.edit.draft.items.some(i=>i.exId===e.id);
   return `<div class="nav"><div class="b" data-a="back"><span>‹</span>${esc(L.backLabel)}</div><div class="star ${fav?'':'off'}" data-a="fav">${fav?'★':'☆'}</div></div>
   <div class="scroll"><div class="pimg" ${exBg(e)}>${demoBtn(e)}</div><div class="pt">${esc(e.name)}</div>
-  <div class="tags"><span>${EQ[e.equip].label}</span><span>${e.muscle}</span>${(e.also||[]).map(a=>`<span>${esc(a)}</span>`).join('')}</div>
   <div class="cards"><div class="cd"><div class="l">Best Set</div><div class="v">${best?(bw?`${best.r}<small> reps</small>`:`${best.w}<small> lb</small> × ${best.r}`):'—'}</div></div>
   <div class="cd"><div class="l">Sessions</div><div class="v">${hist.length}</div></div></div>
   <div class="sect" style="margin-top:22px">History</div>
