@@ -235,3 +235,15 @@ box-shadow:0 -6px 30px rgba(0,0,0,.7);transform:translateY(140%);transition:tran
 .list.tgt .ex .ic{width:56px;height:56px;border-radius:13px}
 .list.tgt .ex .n{font-size:18px}
 .list.tgt .ex .tv{font-size:16px;margin-top:6px;color:var(--gray);font-weight:400}.list.tgt .ex .tv b{font-weight:600}
+
+/* exercise demo video (profile) */
+.pimg{position:relative}
+.pimg video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border-radius:32px;opacity:0;pointer-events:none;mix-blend-mode:lighten;background:transparent}
+.pimg.playing{background-image:none!important}
+.pimg.playing video{opacity:1;pointer-events:auto;cursor:pointer}
+.dplay{position:absolute;right:8px;bottom:8px;width:36px;height:36px;border-radius:50%;background:rgba(60,60,64,.62);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;-webkit-tap-highlight-color:transparent;transition:transform .12s,background .12s}
+.dplay:active{transform:scale(.9);background:rgba(90,90,94,.7)}
+.dplay svg{width:18px;height:18px;fill:#fff}
+.dplay .i-pause{display:none}
+.pimg.playing .dplay .i-play{display:none}.pimg.playing .dplay .i-pause{display:block}
+.dplay .i-play{margin-left:2px}

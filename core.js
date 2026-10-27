@@ -15,9 +15,9 @@ const ICONS=[['chest','Chest'],['back','Back'],['traps','Traps'],['shoulders','S
 ['abductors','Abductors'],['hip-flexors','Hip Flexors'],['serratus','Serratus'],['neck','Neck']];
 const ICON_MUSCLE={chest:'Chest',back:'Back',traps:'Back',shoulders:'Shoulders','rear-delts':'Shoulders',bicep:'Biceps',tricep:'Triceps',forearm:'Biceps',abs:'Core',obliques:'Core','lower-back':'Back',
 glutes:'Legs',quads:'Legs',hamstrings:'Legs',calves:'Legs',adductors:'Legs',abductors:'Legs','hip-flexors':'Core',serratus:'Core',neck:'Shoulders'};
-// id, name, equip, muscle, also, img, common, min, max, start weight
+// id, name, equip, muscle, also, img, common, min, max, start weight, [demo video id]
 const BUILTIN=[
-['bench-press','Bench Press','barbell','Chest',['Triceps','Front Delts'],'bench-press',1,6,8,135],
+['bench-press','Bench Press','barbell','Chest',['Triceps','Front Delts'],'bench-press',1,6,8,135,'bench-press'],
 ['incline-bench','Incline Bench Press','barbell','Chest',['Front Delts','Triceps'],'incline-bench-press',0,6,8,115],
 ['incline-db','Incline DB Press','dumbbell','Chest',['Front Delts','Triceps'],'incline-db-press',1,8,10,50],
 ['db-bench','DB Bench Press','dumbbell','Chest',['Triceps'],'db-bench',0,8,10,55],
@@ -161,7 +161,7 @@ const BUILTIN=[
 ['v-up','V-Up','bodyweight','Core',['Hip Flexors'],'v-up',0,10,15,0],
 ['bird-dog','Bird Dog','bodyweight','Core',['Glutes','Back'],'bird-dog',0,10,12,0],
 ];
-const LIBB={};BUILTIN.forEach(a=>LIBB[a[0]]={id:a[0],name:a[1],equip:a[2],muscle:a[3],also:a[4],img:a[5],common:!!a[6],min:a[7],max:a[8],startW:a[9]});
+const LIBB={};BUILTIN.forEach(a=>LIBB[a[0]]={id:a[0],name:a[1],equip:a[2],muscle:a[3],also:a[4],img:a[5],common:!!a[6],min:a[7],max:a[8],startW:a[9],demo:a[10]});
 
 /* ---------- state ---------- */
 let S;
@@ -246,3 +246,18 @@ const restTxt=s=>!s?'Off':(s%60?(s/60).toFixed(1).replace('.0',''):s/60)+' min';
 const lastDone=wid=>{const s=S.sessions.find(x=>x.wid===wid);return s?s.date:null};
 const curPlan=()=>S.plans.find(p=>p.id===S.activePlan)||S.plans[0];
 const fmtClock=ms=>{const s=Math.max(0,Math.floor(ms/1000)),h=Math.floor(s/3600),m=Math.floor(s/60)%60,x=s%60;return (h?h+':'+String(m).padStart(2,'0'):m)+':'+String(x).padStart(2,'0')};
+
+/* ---------- exercise demo video (profile screen, only when e.demo is set) ---------- */
+const demoAttr=e=>e.demo?` data-demo="${ASSET}img/demo/${e.demo}"`:'';
+const demoBtn=e=>e.demo?'<div class="dplay" data-a="demoPlay" role="button" aria-label="Play demo"><svg class="i-play" viewBox="0 0 24 24"><path d="M8.5 5.6v12.8c0 .8.9 1.3 1.6.9l10-6.4c.6-.4.6-1.3 0-1.7l-10-6.4c-.7-.4-1.6.1-1.6.9z"/></svg><svg class="i-pause" viewBox="0 0 24 24"><rect x="6.5" y="5" width="3.6" height="14" rx="1.2"/><rect x="13.9" y="5" width="3.6" height="14" rx="1.2"/></svg></div>':'';
+function demoToggle(el){
+  const box=el.closest('.pimg');if(!box||!box.dataset.demo)return;
+  let v=box.querySelector('video');
+  if(!v){v=document.createElement('video');v.muted=true;v.defaultMuted=true;v.loop=true;v.playsInline=true;
+    v.setAttribute('playsinline','');v.setAttribute('muted','');v.setAttribute('webkit-playsinline','');v.setAttribute('data-a','demoPlay');
+    v.poster=box.dataset.demo+'.jpg?v=1';v.src=box.dataset.demo+'.mp4?v=1';
+    v.addEventListener('playing',()=>box.classList.add('playing'));
+    box.insertBefore(v,box.firstChild);}
+  if(box.classList.contains('playing')||(!v.paused&&!v.ended)){v.pause();box.classList.remove('playing');}
+  else{v.currentTime=0;const p=v.play();if(p&&p.catch)p.catch(()=>{});}
+}
