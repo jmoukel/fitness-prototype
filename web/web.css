@@ -11,7 +11,7 @@ html.wide{--sat:0px;--sab:0px}
 .wide .shell{display:flex;flex:1;min-height:0}
 .wide .side{flex:none;width:350px;background:#131315;border-right:1px solid #262628;padding:44px 18px 26px;overflow-y:auto}
 .wide .side .top{font-size:13px;margin:0 8px 2px}
-.wide .side .dd{font-size:30px;margin:0 8px}
+.wide .side .dd{font-size:30px;margin:0 8px 22px}
 .wide .side .sub{font-size:14px;margin:4px 8px 24px}
 .wide .side h2{font-size:15px;color:var(--gray);text-transform:uppercase;letter-spacing:.3px;font-weight:600;margin:28px 8px 10px}
 .wide .side .w{background:transparent;border-radius:14px;padding:11px 12px;margin-bottom:6px;gap:13px}

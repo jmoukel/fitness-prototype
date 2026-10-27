@@ -51,7 +51,7 @@ function listHTML(){
     <div class="wt"><div class="wn">${esc(w.name)}</div><div class="wm" ${live?'style="color:var(--acc)"':''}>${live?'In progress':d?ago(d,true):'Not done yet'}</div></div>${dn?'<div class="wc">✓</div>':''}</div>`};
   return `<div class="hd"><div class="ht pl" data-a="plans" role="button" aria-label="Plans"><span>${esc(p.name)}</span><i class="chv"></i></div>${tm()}</div><div class="bd" data-keep="l">${todo.map(row).join('')}${done.map(row).join('')}
   ${ws.length?'':'<div class="cap">No workouts in this plan yet.</div>'}
-  <div class="cap">${done.length} of ${ws.length} done this week</div></div>`;
+  </div>`;
 }
 
 /* ---------- 1b. plans ---------- */

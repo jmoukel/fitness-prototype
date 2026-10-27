@@ -126,7 +126,6 @@ function planHTML(){
   return `<div class="scroll"><div class="wrap plan-top">
     <div class="top">This Week</div>
     <div class="dd" data-a="planMenu">${esc(p.name)}<span class="chev">▼</span></div>
-    <div class="sub">${done.length} of ${ws.length} done · Pick any workout</div>
     ${!ws.length?`<div class="empty">No workouts in this plan yet.</div>`:''}
     ${ws.length&&!todo.length?`<div class="alldone"><b>All done this week 🎉</b>Nice work. Everything resets Monday.</div>`:''}
     ${todo.map(card).join('')}
