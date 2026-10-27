@@ -6,6 +6,8 @@ A clickable **fake-data prototype** of the fitness app mockups. It is not the re
 
 Apple Watch version: https://jmoukel.github.io/fitness-prototype/watch/ (shares the same demo data when opened on the same device)
 
+Web version: https://jmoukel.github.io/fitness-prototype/web/ (desktop layout on wide screens, phone layout on narrow; same demo data)
+
 
 ## Using it on iPhone
 - Open the link in Safari. For a full-screen, app-like view, tap Share → **Add to Home Screen**.

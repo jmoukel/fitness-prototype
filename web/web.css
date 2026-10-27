@@ -1,0 +1,130 @@
+/* Web prototype: full-window app. <900px = phone layout, >=900px = desktop (sidebar + main pane). Loads after ../app.css */
+html,body{background:#000}
+#app{position:fixed;inset:0;left:0;top:0;width:auto;height:auto;transform:none;border-radius:0;box-shadow:none}
+html{--sat:max(env(safe-area-inset-top,0px),14px);--sab:max(env(safe-area-inset-bottom,0px),14px)}
+@media (min-width:600px){html{--sat:max(env(safe-area-inset-top,0px),14px);--sab:max(env(safe-area-inset-bottom,0px),14px)}body{background:#000}}
+html.wide{--sat:0px;--sab:0px}
+/* tablet-ish widths in phone layout: keep content readable */
+@media (min-width:600px) and (max-width:899px){.layer>.scroll>*,.layer>.nav,.layer>.tb{max-width:640px;margin-left:auto;margin-right:auto}.layer>.nav,.layer>.tb{width:100%}}
+
+/* ---------- desktop ---------- */
+.wide .shell{display:flex;flex:1;min-height:0}
+.wide .side{flex:none;width:350px;background:#131315;border-right:1px solid #262628;padding:44px 18px 26px;overflow-y:auto}
+.wide .side .top{font-size:13px;margin:0 8px 2px}
+.wide .side .dd{font-size:30px;margin:0 8px}
+.wide .side .sub{font-size:14px;margin:4px 8px 24px}
+.wide .side h2{font-size:15px;color:var(--gray);text-transform:uppercase;letter-spacing:.3px;font-weight:600;margin:28px 8px 10px}
+.wide .side .w{background:transparent;border-radius:14px;padding:11px 12px;margin-bottom:6px;gap:13px}
+.wide .side .w:hover{background:rgba(255,255,255,.05)}
+.wide .side .w.sel{background:var(--pill)}
+.wide .side .w:active{transform:none;opacity:1}
+.wide .side .ic{width:50px;height:50px}
+.wide .side .n{font-size:17px}
+.wide .side .last{font-size:14px}
+.wide .side .chk{width:26px;height:26px;font-size:14px}
+.wide .side .addw{text-align:left;padding:16px 12px 4px;font-size:16px}
+.wide .side .empty,.wide .side .alldone{background:var(--card)}
+.wide .main{flex:1;min-width:0;display:flex;flex-direction:column;position:relative;background:#000}
+.wide .tbar{display:flex;justify-content:space-between;align-items:center;padding:22px 32px 0;min-height:70px;flex-shrink:0;color:var(--acc);font-size:17px}
+.wide .tbar .fade{padding:8px 4px}
+.wide .tbar .startw{background:var(--acc);color:#000;font-weight:800;font-size:16px;padding:11px 22px;border-radius:22px;transition:opacity .15s}
+.wide .tbar .startw:hover{opacity:.9}.wide .tbar .startw:active{opacity:.7}
+.wide .tbar .tm{font-size:17px;font-weight:700;color:#fff}
+.wide .tbar .endb:hover{background:#4a2020}
+.wide .pane{width:760px;max-width:calc(100% - 64px);margin:0 auto;padding:6px 0 56px}
+.wide .pane .hero{flex-direction:row;gap:26px;margin:6px 0 36px}
+.wide .pane .hero .big{width:112px;height:112px;flex-shrink:0}
+.wide .pane .hero .ttl{font-size:40px;text-align:left;margin:0;padding:0}
+.wide .pane .hero .meta{font-size:16px;margin-top:6px}
+.wide .pane .tg{margin:0 6px 12px}
+.wide .pane .list{margin:0;border-radius:20px}
+.wide .pane .list.tgt .ex{padding:18px 24px;gap:18px}
+.wide .pane .list.tgt .ex .ic{width:64px;height:64px}
+.wide .pane .list.tgt .ex .n{font-size:20px}
+.wide .pane .list.tgt .ex .tv{font-size:18px;margin-top:6px}
+.wide .pane .list.tgt .ex:hover,.wide .er:hover{background:#242426}
+.wide .pane .chip{font-size:14px;padding:6px 11px}
+.wide .pane .emptyl{padding:34px}
+
+/* live (desktop) */
+.wide .side .elab{margin:0 8px 6px}
+.wide .side .clock{font-size:64px;margin:0 8px}
+.wide .side .wn{margin:8px 8px 26px}
+.wide .side .w.fin .ic{opacity:.55}.wide .side .w.fin .n{color:var(--gray)}
+.wide .side .w .m{font-size:13px;font-variant-numeric:tabular-nums}
+.wide .pane .cur{margin:0;border-radius:24px;padding:30px 32px 24px}
+.wide .pane .ch{gap:22px;margin-bottom:18px}
+.wide .pane .ch .ic{width:96px;height:96px;border-radius:20px}
+.wide .pane .ch .n{font-size:32px}
+.wide .pane .ch .m{font-size:16px;margin-top:6px}
+.wide .pane .st{height:84px;padding:0 22px;border-radius:18px;font-size:26px;margin-bottom:6px}
+.wide .pane .st .k{width:100px;font-size:18px}
+.wide .pane .st .val{padding:0;font-size:28px}.wide .pane .st .val small{font-size:16px}
+.wide .pane .st .val:hover{opacity:.8}
+.wide .pane .st .up,.wide .pane .st .dn2{font-size:15px}
+.wide .pane .ck{width:40px;height:40px;border-radius:20px}
+.wide .pane .ck.y{font-size:20px}
+.wide .pane .start.fin{margin-top:22px;height:60px;border-radius:30px}
+.wide .main .rest{left:50%;right:auto;width:760px;max-width:calc(100% - 64px);margin-left:calc(min(760px,100% - 64px)/-2);bottom:36px;height:76px;border-radius:22px;padding:0 24px}
+.wide .main .rest .rl{font-size:16px}.wide .main .rest .rl b{font-size:28px}
+.wide .main .rest .sk{padding:10px 20px;font-size:16px}
+
+/* modals: pages (edit, profile), sheets, action sheets */
+.wide .layer.push,.wide .layer.fadeL{inset:auto;left:50%;top:50%;width:var(--mw,720px);height:min(var(--mh,820px),calc(100% - 64px));max-width:calc(100% - 48px);border-radius:26px;background:#1c1c1e;
+ transform:translate(-50%,-47%);opacity:0;transition:transform .32s var(--ease),opacity .25s ease;box-shadow:0 0 0 100vmax rgba(0,0,0,.62),0 30px 90px rgba(0,0,0,.7)}
+.wide .layer.push.in,.wide .layer.fadeL.in{transform:translate(-50%,-50%);opacity:1}
+.wide .layer.under{transform:none!important}
+.wide .layer.push.under,.wide .layer.fadeL.under{transform:translate(-50%,-50%)!important}
+.wide .layer.under>.shade{opacity:0}
+.wide .layer.prof{--mw:980px;--mh:610px}
+.wide .layer.editp{--mw:640px;--mh:860px}
+.wide .layer .nav{padding:22px 26px 0;min-height:64px}
+.wide .layer.editp .scroll{padding:0 24px}
+.wide .layer.editp .list{margin:0}
+.wide .layer.editp .sect{margin:0 8px 8px}
+.wide .layer.editp .spacer,.wide .layer.prof .spacer{height:28px}
+.wide .layer.editp .field{margin:14px 0 0;width:100%}
+.wide .layer.editp .hint{margin-left:8px;margin-right:8px}
+.wide .layer.editp .tg{margin:0 8px 8px}
+.wide .layer.editp .del{margin-bottom:10px}
+.wide .layer.editp .gl{margin-left:8px}
+.wide .layer.editp .grp{margin-bottom:14px}
+
+.wide .pgrid{flex:1;min-height:0;display:flex;gap:32px;padding:6px 32px 8px}
+.wide .pgrid .pl{flex:none;width:380px;display:flex;flex-direction:column;align-items:center;overflow-y:auto;padding-bottom:12px}
+.wide .pgrid .pimg{margin:0;width:230px;height:230px}
+.wide .pgrid .pt{padding:0;font-size:30px}
+.wide .pgrid .tags{padding:0}
+.wide .pgrid .cards{margin:22px 0 0;width:100%}
+.wide .pgrid .cd{background:#2c2c2e}
+.wide .pgrid .pr{flex:1;min-width:0;overflow-y:auto;padding:4px 0 12px}
+.wide .pgrid .pr .sect{margin:0 4px 10px}
+.wide .pgrid .list{margin:0;background:#2c2c2e}
+.wide .pgrid .ex{background:#2c2c2e;border-color:#3a3a3c}
+.wide .layer.prof .bottombar{position:static;background:none;padding:6px 32px 28px;pointer-events:auto}
+.wide .layer.prof .start{width:380px;max-width:100%}
+.wide .layer.prof .star{cursor:pointer}
+
+.wide .sheet{left:50%;right:auto;top:50%;bottom:auto;width:540px;max-width:calc(100% - 48px);max-height:calc(100% - 64px);border-radius:26px;padding:20px 24px 24px;
+ transform:translate(-50%,-47%);opacity:0;transition:transform .32s var(--ease),opacity .25s ease;box-shadow:0 30px 90px rgba(0,0,0,.7)}
+.wide .sheet.tall{top:50%;width:640px;height:min(800px,calc(100% - 64px))}
+.wide .in>.sheet{transform:translate(-50%,-50%);opacity:1}
+.wide .sheet .grab{display:none}
+.wide .sbody{margin:0 -24px;padding:0 24px}
+.wide .chips,.wide .chips2{margin-left:-24px;margin-right:-24px;padding:0 24px}
+.wide .sh{min-height:34px}
+.wide .menuL .dim{background:transparent!important}
+.wide .menu{width:290px;transform-origin:10% 0}
+.wide .menu .mi{cursor:pointer}.wide .menu .mi:hover{background:#3a3a3c}
+.wide .act{left:50%;right:auto;bottom:auto;top:50%;width:400px;transform:translate(-50%,-46%);opacity:0;transition:transform .3s var(--ease),opacity .22s}
+.wide .in>.act{transform:translate(-50%,-50%);opacity:1}
+.wide .act .ag{background:#2c2c2e}
+.wide .act .ab:hover{background:#3a3a3c}
+.wide .er:hover,.wide .row2:hover{background:#3a3a3c}
+.wide .cell:hover .im{opacity:.85}
+.wide .toast{top:20px}
+.wide .scroll{scrollbar-width:thin;scrollbar-color:#3a3a3c transparent}
+.wide ::-webkit-scrollbar{width:10px}.wide ::-webkit-scrollbar-thumb{background:#3a3a3c;border-radius:5px;border:2px solid transparent;background-clip:padding-box}
+
+.wide .main .rest{transform:translateY(220%)}.wide .main .rest.on{transform:none}
+.wide .main{overflow:hidden}
