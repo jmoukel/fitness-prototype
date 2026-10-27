@@ -18,11 +18,11 @@ glutes:'Legs',quads:'Legs',hamstrings:'Legs',calves:'Legs',adductors:'Legs',abdu
 // id, name, equip, muscle, also, img, common, min, max, start weight, [demo video id]
 const BUILTIN=[
 ['bench-press','Bench Press','barbell','Chest',['Triceps','Front Delts'],'bench-press',1,6,8,135,'bench-press'],
-['incline-bench','Incline Bench Press','barbell','Chest',['Front Delts','Triceps'],'incline-bench-press',0,6,8,115],
-['incline-db','Incline DB Press','dumbbell','Chest',['Front Delts','Triceps'],'incline-db-press',1,8,10,50],
+['incline-bench','Incline Bench Press','barbell','Chest',['Front Delts','Triceps'],'incline-bench-press',0,6,8,115,'incline-bench-press'],
+['incline-db','Incline DB Press','dumbbell','Chest',['Front Delts','Triceps'],'incline-db-press',1,8,10,50,'incline-db-press'],
 ['db-bench','DB Bench Press','dumbbell','Chest',['Triceps'],'db-bench',0,8,10,55],
-['db-fly','DB Fly','dumbbell','Chest',['Front Delts'],'db-fly',0,10,12,25],
-['cable-crossover','Cable Crossover','cable','Chest',['Front Delts'],'cable-crossover',1,12,15,30],
+['db-fly','DB Fly','dumbbell','Chest',['Front Delts'],'db-fly',0,10,12,25,'db-fly'],
+['cable-crossover','Cable Crossover','cable','Chest',['Front Delts'],'cable-crossover',1,12,15,30,'cable-crossover'],
 ['chest-press','Machine Chest Press','machine','Chest',['Triceps'],'chest-press',1,10,12,120],
 ['pec-deck','Pec Deck','machine','Chest',[],'pec-deck',0,12,15,100],
 ['push-up','Push-Up','bodyweight','Chest',['Triceps','Core'],'push-up',1,12,20,0],
@@ -32,14 +32,14 @@ const BUILTIN=[
 ['skull-crusher','Skull Crusher','barbell','Triceps',[],'skull-crusher',0,8,10,60],
 ['oh-ext','Overhead DB Extension','dumbbell','Triceps',[],'oh-ext',0,10,12,40],
 ['diamond-push-up','Diamond Push-Up','bodyweight','Triceps',['Chest'],'diamond-push-up',0,10,15,0],
-['deadlift','Deadlift','barbell','Back',['Hamstrings','Glutes'],'deadlift',1,4,6,225],
+['deadlift','Deadlift','barbell','Back',['Hamstrings','Glutes'],'deadlift',1,4,6,225,'deadlift'],
 ['barbell-row','Barbell Row','barbell','Back',['Biceps'],'barbell-row',1,6,8,135],
-['pull-up','Pull-Up','bodyweight','Back',['Biceps'],'pull-up',1,6,10,0],
+['pull-up','Pull-Up','bodyweight','Back',['Biceps'],'pull-up',1,6,10,0,'pull-up'],
 ['lat-pulldown','Lat Pulldown','machine','Back',['Biceps'],'lat-pulldown',1,8,10,120],
 ['seated-row','Seated Cable Row','cable','Back',['Biceps'],'seated-row',1,10,12,120],
 ['db-row','One-Arm DB Row','dumbbell','Back',['Biceps'],'db-row',0,8,10,60],
 ['inverted-row','Inverted Row','bodyweight','Back',['Biceps'],'inverted-row',0,8,12,0],
-['barbell-curl','Barbell Curl','barbell','Biceps',['Forearms'],'barbell-curl',1,8,10,65],
+['barbell-curl','Barbell Curl','barbell','Biceps',['Forearms'],'barbell-curl',1,8,10,65,'barbell-curl'],
 ['db-curl','DB Curl','dumbbell','Biceps',[],'db-curl',1,10,12,25],
 ['hammer-curl','Hammer Curl','dumbbell','Biceps',['Forearms'],'hammer-curl',1,10,12,25],
 ['cable-curl','Cable Curl','cable','Biceps',[],'cable-curl',0,12,15,40],
@@ -50,7 +50,7 @@ const BUILTIN=[
 ['face-pull','Face Pull','cable','Shoulders',['Rear Delts'],'face-pull',1,12,15,40],
 ['rear-delt-fly','Rear Delt Machine','machine','Shoulders',['Rear Delts'],'rear-delt-fly',0,12,15,70],
 ['pike-push-up','Pike Push-Up','bodyweight','Shoulders',['Triceps'],'pike-push-up',0,8,12,0],
-['squat','Back Squat','barbell','Legs',['Glutes'],'squat',1,5,8,185],
+['squat','Back Squat','barbell','Legs',['Glutes'],'squat',1,5,8,185,'squat'],
 ['rdl','Romanian Deadlift','barbell','Legs',['Hamstrings','Glutes'],'rdl',1,8,10,135],
 ['leg-press','Leg Press','machine','Legs',['Glutes'],'leg-press',1,10,12,270],
 ['leg-extension','Leg Extension','machine','Legs',[],'leg-extension',0,12,15,90],
@@ -251,7 +251,7 @@ const fmtClock=ms=>{const s=Math.max(0,Math.floor(ms/1000)),h=Math.floor(s/3600)
 /* iOS Safari: the <video> exists up front with muted/playsinline attributes, and play() is called synchronously inside the tap handler. */
 // Demo = stacked-alpha H.264 (top: colour premultiplied on black, bottom: alpha matte), composited on a canvas.
 // Transparent like the PNG still, so no browser colour-management box on any card colour.
-const DEMO_V=4;
+const DEMO_V=5;
 const demoBtn=(e,v='')=>e.demo?`<video class="dvid" muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback src="${ASSET}img/demo/${e.demo}.mp4?v=${DEMO_V}"></video><canvas class="dcv" data-a="demoPlay" width="480" height="480"></canvas><div class="dplay" data-a="demoPlay" role="button" aria-label="Play demo"><svg class="i-play" viewBox="0 0 24 24"><path d="M8.5 5.6v12.8c0 .8.9 1.3 1.6.9l10-6.4c.6-.4.6-1.3 0-1.7l-10-6.4c-.7-.4-1.6.1-1.6.9z"/></svg><svg class="i-pause" viewBox="0 0 24 24"><rect x="6.5" y="5" width="3.6" height="14" rx="1.2"/><rect x="13.9" y="5" width="3.6" height="14" rx="1.2"/></svg></div>`:'';
 function demoDraw(v,cv){
   if(!v.__off){v.__off=document.createElement('canvas');v.__off.width=480;v.__off.height=960;v.__octx=v.__off.getContext('2d',{willReadFrequently:true});v.__cctx=cv.getContext('2d');v.__out=v.__cctx.createImageData(480,480);}
