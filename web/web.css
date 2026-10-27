@@ -41,7 +41,7 @@ html.wide{--sat:0px;--sab:0px}
 .wide .pane .list.tgt .ex{padding:18px 24px;gap:18px}
 .wide .pane .list.tgt .ex .ic{width:64px;height:64px}
 .wide .pane .list.tgt .ex .n{font-size:20px}
-.wide .pane .list.tgt .ex .tv{font-size:18px;margin-top:6px}
+.wide .pane .list.tgt .ex .tv{font-size:17px;margin-top:6px}
 .wide .pane .list.tgt .ex:hover,.wide .er:hover{background:#242426}
 .wide .pane .chip{font-size:14px;padding:6px 11px}
 .wide .pane .emptyl{padding:34px}

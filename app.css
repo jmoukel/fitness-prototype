@@ -234,4 +234,4 @@ box-shadow:0 -6px 30px rgba(0,0,0,.7);transform:translateY(140%);transition:tran
 .list.tgt .ex{padding:16px;gap:14px}
 .list.tgt .ex .ic{width:56px;height:56px;border-radius:13px}
 .list.tgt .ex .n{font-size:18px}
-.list.tgt .ex .tv{font-size:17px;margin-top:6px;color:var(--gray);font-weight:400}.list.tgt .ex .tv b{font-weight:600}
+.list.tgt .ex .tv{font-size:16px;margin-top:6px;color:var(--gray);font-weight:400}.list.tgt .ex .tv b{font-weight:600}
