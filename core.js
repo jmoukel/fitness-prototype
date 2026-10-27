@@ -167,7 +167,7 @@ const LIBB={};BUILTIN.forEach(a=>LIBB[a[0]]={id:a[0],name:a[1],equip:a[2],muscle
 let S;
 const LIB=id=>LIBB[id]||(S.custom&&S.custom[id])||{id,name:'Exercise',equip:'dumbbell',muscle:'Chest',also:[],min:8,max:10,startW:20};
 const allEx=()=>[...Object.values(LIBB),...Object.values(S.custom||{})];
-const exImg=e=>e.photo||(ASSET+'img/ex/'+(e.img||(e.custom?'default':'generic'))+'.png?v=3');
+const exImg=e=>e.photo||(ASSET+'img/ex/'+(e.img||(e.custom?'default':'generic'))+'.png?v=4');
 const exBg=e=>`style="background-image:url('${exImg(e)}')${e.photo?';background-size:cover':e.img?';background-color:transparent;background-size:contain':';background-color:#28282a'}"`;
 const iconImg=ic=>ASSET+'img/icons/'+ic+'.png?v=3';
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){console.warn(e)}}
@@ -249,17 +249,43 @@ const fmtClock=ms=>{const s=Math.max(0,Math.floor(ms/1000)),h=Math.floor(s/3600)
 
 /* ---------- exercise demo video (profile screen, only when e.demo is set) ---------- */
 /* iOS Safari: the <video> exists up front with muted/playsinline attributes, and play() is called synchronously inside the tap handler. */
-const demoBtn=(e,v='')=>e.demo?`<video class="dvid" data-a="demoPlay" muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback poster="${ASSET}img/demo/${e.demo}${v}.jpg?v=3" src="${ASSET}img/demo/${e.demo}${v}.mp4?v=3"></video><div class="dplay" data-a="demoPlay" role="button" aria-label="Play demo"><svg class="i-play" viewBox="0 0 24 24"><path d="M8.5 5.6v12.8c0 .8.9 1.3 1.6.9l10-6.4c.6-.4.6-1.3 0-1.7l-10-6.4c-.7-.4-1.6.1-1.6.9z"/></svg><svg class="i-pause" viewBox="0 0 24 24"><rect x="6.5" y="5" width="3.6" height="14" rx="1.2"/><rect x="13.9" y="5" width="3.6" height="14" rx="1.2"/></svg></div>`:'';
+// Demo = stacked-alpha H.264 (top: colour premultiplied on black, bottom: alpha matte), composited on a canvas.
+// Transparent like the PNG still, so no browser colour-management box on any card colour.
+const DEMO_V=4;
+const demoBtn=(e,v='')=>e.demo?`<video class="dvid" muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback src="${ASSET}img/demo/${e.demo}.mp4?v=${DEMO_V}"></video><canvas class="dcv" data-a="demoPlay" width="480" height="480"></canvas><div class="dplay" data-a="demoPlay" role="button" aria-label="Play demo"><svg class="i-play" viewBox="0 0 24 24"><path d="M8.5 5.6v12.8c0 .8.9 1.3 1.6.9l10-6.4c.6-.4.6-1.3 0-1.7l-10-6.4c-.7-.4-1.6.1-1.6.9z"/></svg><svg class="i-pause" viewBox="0 0 24 24"><rect x="6.5" y="5" width="3.6" height="14" rx="1.2"/><rect x="13.9" y="5" width="3.6" height="14" rx="1.2"/></svg></div>`:'';
+function demoDraw(v,cv){
+  if(!v.__off){v.__off=document.createElement('canvas');v.__off.width=480;v.__off.height=960;v.__octx=v.__off.getContext('2d',{willReadFrequently:true});v.__cctx=cv.getContext('2d');v.__out=v.__cctx.createImageData(480,480);}
+  const W=480,o=v.__octx;
+  try{o.drawImage(v,0,0,W,960);}catch(_){return;}
+  const d=o.getImageData(0,0,W,960).data,out=v.__out.data,n=W*W*4,mo=n;
+  for(let i=0;i<n;i+=4){
+    const al=d[mo+i];
+    if(al<3){out[i]=out[i+1]=out[i+2]=out[i+3]=0;continue;}
+    if(al>=252){out[i]=d[i];out[i+1]=d[i+1];out[i+2]=d[i+2];out[i+3]=255;continue;}
+    const k=255/al;
+    out[i]=Math.min(255,d[i]*k);out[i+1]=Math.min(255,d[i+1]*k);out[i+2]=Math.min(255,d[i+2]*k);out[i+3]=al;
+  }
+  v.__cctx.putImageData(v.__out,0,0);
+}
+function demoLoop(v,cv){
+  if(v.__loop)return;v.__loop=true;
+  const step=()=>{
+    if(v.paused||v.ended){v.__loop=false;return;}
+    demoDraw(v,cv);
+    if(v.requestVideoFrameCallback)v.requestVideoFrameCallback(step);else requestAnimationFrame(step);
+  };
+  step();
+}
 function demoToggle(el,ev){
   if(ev){ev.stopPropagation();ev.preventDefault();}
-  const box=el.closest('.pimg'),v=box&&box.querySelector('video');if(!v)return;
+  const box=el.closest('.pimg'),v=box&&box.querySelector('video'),cv=box&&box.querySelector('canvas');if(!v||!cv)return;
   v.muted=true;v.defaultMuted=true;v.playsInline=true;v.loop=true;
   if(!v.__wired){v.__wired=true;
-    v.addEventListener('playing',()=>box.classList.add('playing'));
+    v.addEventListener('playing',()=>{demoDraw(v,cv);box.classList.add('playing');demoLoop(v,cv)});
     v.addEventListener('pause',()=>box.classList.remove('playing'));
     v.addEventListener('error',()=>{box.classList.remove('playing');console.warn('demo video error',v.error&&v.error.code)});}
   if(!v.paused&&!v.ended){v.pause();try{v.currentTime=0}catch(_){}box.classList.remove('playing');return;}
   const p=v.play();
-  if(p&&p.then)p.then(()=>box.classList.add('playing')).catch(err=>{console.warn('demo play() rejected',err&&err.name);box.classList.remove('playing');});
+  if(p&&p.then)p.then(()=>{demoDraw(v,cv);box.classList.add('playing');demoLoop(v,cv)}).catch(err=>{console.warn('demo play() rejected',err&&err.name);box.classList.remove('playing');});
   else box.classList.add('playing');
 }
