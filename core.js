@@ -161,12 +161,30 @@ const BUILTIN=[
 ['v-up','V-Up','bodyweight','Core',['Hip Flexors'],'v-up',0,10,15,0],
 ['bird-dog','Bird Dog','bodyweight','Core',['Glutes','Back'],'bird-dog',0,10,12,0],
 ];
-const LIBB={};BUILTIN.forEach(a=>LIBB[a[0]]={id:a[0],name:a[1],equip:a[2],muscle:a[3],also:a[4],img:a[5],common:!!a[6],min:a[7],max:a[8],startW:a[9],demo:a[10]});
+/* Fine muscle tags (match the muscle-group icons). Extra field only: muscle/also are untouched. */
+const FINE=['Traps','Upper Back','Lower Back','Rear Delts','Forearms','Abs','Obliques','Glutes','Quads','Hamstrings','Calves','Adductors','Abductors','Hip Flexors','Serratus','Neck'];
+const FINE_PRIM={squat:['Quads'],'leg-press':['Quads'],'leg-extension':['Quads'],'goblet-squat':['Quads'],'walking-lunge':['Quads'],'bw-squat':['Quads','Glutes'],'reverse-lunge':['Quads'],
+'hip-abduction-machine':['Abductors'],deadlift:['Lower Back'],'rack-pull':['Lower Back'],'back-extension':['Lower Back'],'stiff-leg-deadlift':['Lower Back'],'good-morning':['Lower Back'],'sumo-deadlift':['Lower Back'],'bird-dog':['Lower Back'],
+'barbell-row':['Upper Back'],'db-row':['Upper Back'],'seated-row':['Upper Back'],'inverted-row':['Upper Back'],'pendlay-row':['Upper Back'],'t-bar-row':['Upper Back'],'chest-supported-db-row':['Upper Back'],'machine-row':['Upper Back'],'single-arm-cable-row':['Upper Back'],
+'rear-delt-fly':['Rear Delts'],'db-rear-delt-fly':['Rear Delts'],'cable-rear-delt-fly':['Rear Delts'],
+'hanging-leg-raise':['Abs','Hip Flexors'],'hanging-knee-raise':['Abs','Hip Flexors'],'russian-twist':['Abs'],'cable-woodchop':['Abs'],'pallof-press':['Abs'],'bicycle-crunch':['Abs'],'plank':['Abs'],'side-plank':['Abs'],'db-side-bend':['Obliques'],
+'wrist-curl':['Forearms'],'reverse-wrist-curl':['Forearms'],'db-wrist-curl':['Forearms'],'reverse-curl':['Forearms'],'farmers-carry':['Forearms'],'dead-hang':['Forearms']};
+function fineTags(a){
+  const t=new Set(FINE_PRIM[a[0]]||[]);
+  (a[4]||[]).forEach(m=>{if(FINE.includes(m))t.add(m);else if(m==='Back'&&a[3]!=='Back'&&a[3]!=='Biceps')t.add('Lower Back')});
+  if(a[3]==='Core'&&!t.size)t.add('Abs');
+  if(a[3]==='Core'&&(a[4]||[]).includes('Obliques'))t.add('Abs');
+  return FINE.filter(x=>t.has(x));
+}
+const exTags=e=>e.tags||(e.also||[]).filter(m=>FINE.includes(m));
+const LIBB={};BUILTIN.forEach(a=>LIBB[a[0]]={id:a[0],name:a[1],equip:a[2],muscle:a[3],also:a[4],img:a[5],common:!!a[6],min:a[7],max:a[8],startW:a[9],demo:a[10],tags:fineTags(a)});
 
 /* ---------- state ---------- */
 let S;
 const LIB=id=>LIBB[id]||(S.custom&&S.custom[id])||{id,name:'Exercise',equip:'dumbbell',muscle:'Chest',also:[],min:8,max:10,startW:20};
 const allEx=()=>[...Object.values(LIBB),...Object.values(S.custom||{})];
+const muscleChips=()=>{const all=allEx(),has=m=>all.some(e=>e.muscle===m||exTags(e).includes(m));return MUSCLES.concat(FINE).filter(has)};
+const muscleMatch=(e,m)=>m==='All'||e.muscle===m||exTags(e).includes(m);
 const exImg=e=>e.photo||(ASSET+'img/ex/'+(e.img||(e.custom?'default':'generic'))+'.png?v=4');
 const exBg=e=>`style="background-image:url('${exImg(e)}')${e.photo?';background-size:cover':e.img?';background-color:transparent;background-size:contain':';background-color:#28282a'}"`;
 const iconImg=ic=>ASSET+'img/icons/'+ic+'.png?v=3';

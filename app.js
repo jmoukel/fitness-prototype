@@ -292,13 +292,13 @@ A.addEx=(x,L)=>{
 function addHTML(L){
   return `<div class="sh"><div class="c" data-a="dismiss">Cancel</div><div class="tt">Add Exercise</div><div class="d" data-a="pop">Done</div></div>
   <div class="srch"><span>⌕</span><input data-in="q" type="search" placeholder="Search exercises" value="${esc(L.q)}" autocomplete="off"></div>
-  <div class="chips">${['All',...MUSCLES].map(m=>`<span class="${L.mus===m?'on':''}" data-a="axMus" data-m="${m}">${m}</span>`).join('')}</div>
+  <div class="chips">${['All',...muscleChips()].map(m=>`<span class="${L.mus===m?'on':''}" data-a="axMus" data-m="${m}">${m}</span>`).join('')}</div>
   <div class="chips2">${EQF.map(m=>`<span class="${L.eq===m?'on':''}" data-a="axEq" data-m="${m}">${m}</span>`).join('')}</div>
   <div class="sbody" id="axb">${addBody(L)}</div>`;
 }
 function addBody(L){
   const q=L.q.trim().toLowerCase(), sel=new Set(L.edit.draft.items.map(i=>i.exId));
-  const list=allEx().filter(e=>(L.mus==='All'||e.muscle===L.mus||(e.muscle==='Legs'&&L.mus==='Legs'))&&eqMatch(L.eq,e.equip)&&(!q||e.name.toLowerCase().includes(q)||e.muscle.toLowerCase().includes(q)));
+  const list=allEx().filter(e=>muscleMatch(e,L.mus)&&eqMatch(L.eq,e.equip)&&(!q||e.name.toLowerCase().includes(q)||e.muscle.toLowerCase().includes(q)||exTags(e).some(t=>t.toLowerCase().includes(q))));
   const fav=list.filter(e=>S.favs.includes(e.id)), rest=list.filter(e=>!S.favs.includes(e.id));
   const custom=rest.filter(e=>e.custom), lib=rest.filter(e=>!e.custom);
   const common=lib.filter(e=>e.common), other=lib.filter(e=>!e.common).sort((a,b)=>MUSCLES.indexOf(a.muscle)-MUSCLES.indexOf(b.muscle));
