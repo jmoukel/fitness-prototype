@@ -129,7 +129,7 @@ function planHTML(){
   const dcard=w=>`<div class="w done" data-a="openW" data-id="${w.id}"><div class="ic" ${bg(iconImg(w.icon))}></div>
     <div class="t"><div class="n">${esc(w.name)}</div><div class="m">${ago(lastDone(w.id),true)}</div></div><div class="chk">✓</div></div>`;
   return `<div class="scroll"><div class="wrap plan-top">
-    <div class="top">This Week</div>
+    
     <div class="dd" data-a="planMenu">${esc(p.name)}<span class="chev">▼</span></div>
     ${!ws.length?`<div class="empty">No workouts in this plan yet.</div>`:''}
     ${ws.length&&!todo.length?`<div class="alldone"><b>All done this week 🎉</b>Nice work. Everything resets Monday.</div>`:''}
@@ -162,7 +162,7 @@ function shellHTML(){
     <div class="t"><div class="n">${esc(w.name)}</div></div><div class="last">${d?ago(d):'New'}</div></div>`};
   const dcard=w=>`<div class="w sw done ${w.id===sel?'sel':''}" data-a="openW" data-id="${w.id}"><div class="ic" ${bg(iconImg(w.icon))}></div>
     <div class="t"><div class="n">${esc(w.name)}</div><div class="m">${ago(lastDone(w.id),true)}</div></div><div class="chk">✓</div></div>`;
-  return `<div class="shell"><div class="side scroll"><div class="top">This Week</div>
+  return `<div class="shell"><div class="side scroll">
     <div class="dd" data-a="planMenu">${esc(p.name)}<span class="chev">▼</span></div>
     ${!ws.length?`<div class="empty">No workouts in this plan yet.</div>`:''}
     ${ws.length&&!todo.length?`<div class="alldone"><b>All done this week 🎉</b>Nice work. Everything resets Monday.</div>`:''}

@@ -219,7 +219,7 @@ box-shadow:0 -6px 30px rgba(0,0,0,.7);transform:translateY(140%);transition:tran
 .toast{position:absolute;left:50%;top:calc(var(--sat) + 10px);transform:translate(-50%,-150%);background:#2c2c2e;color:#fff;padding:10px 16px;border-radius:20px;font-size:15px;font-weight:600;z-index:999;transition:transform .4s var(--ease);white-space:nowrap;box-shadow:0 10px 30px rgba(0,0,0,.5)}
 .toast.on{transform:translate(-50%,0)}.toast b{color:var(--acc)}
 .layer.fadeL{opacity:0;transition:opacity .25s ease}.layer.fadeL.in{opacity:1}
-.plan-top{padding-top:calc(var(--sat) + 4px)}
+.plan-top{padding-top:calc(var(--sat) + 22px)}
 .ph2 input{position:absolute;inset:0;opacity:0}
 .ph2:after{content:"Change";position:absolute;bottom:0;left:0;right:0;height:26px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;border-radius:0 0 26px 26px}
 .sheet .sbody .start{margin-top:22px}
