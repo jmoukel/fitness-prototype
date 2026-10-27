@@ -179,7 +179,7 @@ function mainHTML(w){
   return `<div class="tbar"><div class="fade" data-a="edit" data-id="${w.id}">Edit</div>${w.items.length?`<div class="startw" data-a="start" data-id="${w.id}">${live?'Resume Workout':'▶&nbsp; Start Workout'}</div>`:''}</div>
   <div class="scroll"><div class="pane"><div class="hero"><div class="big" ${bg(iconImg(w.icon))}></div><div><div class="ttl">${esc(w.name)}</div>
 </div></div>
-  ${w.items.length?`<div class="tg"><div class="sect">${doneWk?"Next Week's Target":"This Week's Target"}</div>${doneWk?'':'<span class="nw">NEW</span>'}</div>
+  ${w.items.length?`<div class="tg"><div class="sect">${doneWk?"Next Week's Target":"This Week's Target"}</div>${doneWk?'':'<span class="nw">TARGET</span>'}</div>
   <div class="list tgt">${rows}</div>`:`<div class="list"><div class="emptyl">No exercises yet.<br>Click <b style="color:var(--acc)">Edit</b> to add some.</div></div>`}</div></div>`;
 }
 
@@ -194,7 +194,7 @@ function detailHTML(L){
   return `<div class="nav"><div class="b" data-a="back"><span>‹</span>${esc(planOf(w.id).name)}</div><div class="fade" data-a="edit">Edit</div></div>
   <div class="scroll"><div class="hero"><div class="big" ${bg(iconImg(w.icon))}></div><div class="ttl">${esc(w.name)}</div>
 </div>
-  ${w.items.length?`<div class="tg"><div class="sect">${doneWk?"Next Week's Target":"This Week's Target"}</div>${doneWk?'':'<span class="nw">NEW</span>'}</div>
+  ${w.items.length?`<div class="tg"><div class="sect">${doneWk?"Next Week's Target":"This Week's Target"}</div>${doneWk?'':'<span class="nw">TARGET</span>'}</div>
   <div class="list tgt">${rows}</div>`:`<div class="list"><div class="emptyl">No exercises yet.<br>Tap <b style="color:var(--acc)">Edit</b> to add some.</div></div>`}
   <div class="spacer"></div></div>
   ${w.items.length?`<div class="bottombar"><div class="start" data-a="start">${live?'Resume Workout':'▶&nbsp; Start Workout'}</div></div>`:''}`;
