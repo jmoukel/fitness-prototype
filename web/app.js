@@ -338,7 +338,7 @@ function addBody(L){
   const list=allEx().filter(e=>(L.mus==='All'||e.muscle===L.mus||(e.muscle==='Legs'&&L.mus==='Legs'))&&eqMatch(L.eq,e.equip)&&(!q||e.name.toLowerCase().includes(q)||e.muscle.toLowerCase().includes(q)));
   const fav=list.filter(e=>S.favs.includes(e.id)), rest=list.filter(e=>!S.favs.includes(e.id));
   const custom=rest.filter(e=>e.custom), lib=rest.filter(e=>!e.custom);
-  const common=lib.filter(e=>e.common), other=lib.filter(e=>!e.common);
+  const common=lib.filter(e=>e.common), other=lib.filter(e=>!e.common).sort((a,b)=>MUSCLES.indexOf(a.muscle)-MUSCLES.indexOf(b.muscle));
   const row=(e,sub)=>`<div class="er" data-a="axProf" data-ex="${e.id}"><div class="im" ${exBg(e)}></div><div class="nm">${esc(e.name)}<small>${esc(sub(e))}</small></div>
     <div class="adw" data-a="axTog" data-ex="${e.id}"><div class="ad ${sel.has(e.id)?'on':''}">${sel.has(e.id)?'✓':'+'}</div></div></div>`;
   const s1=e=>EQ[e.equip].label+' · '+e.muscle, s2=e=>e.muscle+(e.also&&e.also.length?' · '+e.also.join(', '):'');
