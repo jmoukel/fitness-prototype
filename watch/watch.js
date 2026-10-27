@@ -73,7 +73,7 @@ function startHTML(V){
     return `<div class="tr"><div class="n">${esc(ex.name)}</div><div class="v rd">${wl} × ${rp}</div></div>`}).join('');
   return `${hd('')}<div class="bd" data-keep="s">
     <div class="sh"><div class="shr"><div class="wi" ${bgs(iconImg(w.icon))}></div><div class="nm">${esc(w.name)}</div></div></div>
-    ${w.items.length?`<div class="tgh">${dw?"Next Week's Target":'<span class="nw">TARGET</span>'}</div>${rows}`:'<div class="cap">No exercises yet. Add some on iPhone.</div>'}
+    ${w.items.length?`<div class="tgh">${dw?"Next Week's Goal":'<span class="nw">GOAL</span>'}</div>${rows}`:'<div class="cap">No exercises yet. Add some on iPhone.</div>'}
     <div class="spc"></div></div>
   ${w.items.length?`<div class="botb"><div class="btn" data-a="start">${live?'Resume':'<span style="font-size:14px">▶</span> Start'}</div></div>`:''}`;
 }
@@ -106,8 +106,8 @@ function deltaTxt(s,bw){
   const dw=bw?0:s.w-s.tw, dr=s.r-s.tr, parts=[];
   if(dw)parts.push(`${dw>0?'↑':'↓'} ${Math.abs(dw)} lb`);
   if(dr)parts.push(`${dr>0?'↑':'↓'} ${Math.abs(dr)} rep${Math.abs(dr)===1?'':'s'}`);
-  if(!parts.length)return {t:'Same as target',c:''};
-  return {t:parts.join(', ')+' from target',c:(dw<0||dr<0)?'dn':'up'};
+  if(!parts.length)return {t:'Same as goal',c:''};
+  return {t:parts.join(', ')+' from goal',c:(dw<0||dr<0)?'dn':'up'};
 }
 function mainPage(V,lv){
   if(allDone(lv)){const tot=lv.ex.reduce((a,e)=>a+e.sets.length,0);

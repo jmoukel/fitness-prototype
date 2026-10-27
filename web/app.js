@@ -179,7 +179,7 @@ function mainHTML(w){
   return `<div class="tbar"><div class="fade" data-a="edit" data-id="${w.id}">Edit</div>${w.items.length?`<div class="startw" data-a="start" data-id="${w.id}">${live?'Resume Workout':'▶&nbsp; Start Workout'}</div>`:''}</div>
   <div class="scroll"><div class="pane"><div class="hero"><div class="big" ${bg(iconImg(w.icon))}></div><div><div class="ttl">${esc(w.name)}</div>
 </div></div>
-  ${w.items.length?`<div class="tg">${doneWk?`<div class="sect">Next Week's Target</div>`:'<span class="nw">TARGET</span>'}</div>
+  ${w.items.length?`<div class="tg">${doneWk?`<div class="sect">Next Week's Goal</div>`:'<span class="nw">GOAL</span>'}</div>
   <div class="list tgt">${rows}</div>`:`<div class="list"><div class="emptyl">No exercises yet.<br>Click <b style="color:var(--acc)">Edit</b> to add some.</div></div>`}</div></div>`;
 }
 
@@ -194,7 +194,7 @@ function detailHTML(L){
   return `<div class="nav"><div class="b" data-a="back"><span>‹</span>${esc(planOf(w.id).name)}</div><div class="fade" data-a="edit">Edit</div></div>
   <div class="scroll"><div class="hero"><div class="big" ${bg(iconImg(w.icon))}></div><div class="ttl">${esc(w.name)}</div>
 </div>
-  ${w.items.length?`<div class="tg">${doneWk?`<div class="sect">Next Week's Target</div>`:'<span class="nw">TARGET</span>'}</div>
+  ${w.items.length?`<div class="tg">${doneWk?`<div class="sect">Next Week's Goal</div>`:'<span class="nw">GOAL</span>'}</div>
   <div class="list tgt">${rows}</div>`:`<div class="list"><div class="emptyl">No exercises yet.<br>Tap <b style="color:var(--acc)">Edit</b> to add some.</div></div>`}
   <div class="spacer"></div></div>
   ${w.items.length?`<div class="bottombar"><div class="start" data-a="start">${live?'Resume Workout':'▶&nbsp; Start Workout'}</div></div>`:''}`;
@@ -297,16 +297,16 @@ function ruleHTML(L){
     `<div class="gl">Rep range</div><div class="grp">${stp('min','From',t.min)}${stp('max','To',t.max)}</div>`;
   const body=t.mode==='default'?`${range}<div class="gl">How it progresses</div><div class="grp">
       <div class="gr ro"><span>Each week</span><span>+1 rep</span></div>
-      <div class="gr ro"><span>When every set hits ${it.perSet?'its target':t.max}</span><span>${ex.equip==='bodyweight'?'Keep adding reps':'+'+inc+' lb'}</span></div>
+      <div class="gr ro"><span>When every set hits ${it.perSet?'its goal':t.max}</span><span>${ex.equip==='bodyweight'?'Keep adding reps':'+'+inc+' lb'}</span></div>
       ${ex.equip==='bodyweight'?'':`<div class="gr ro"><span>Then reps go back to</span><span>${it.perSet?'start':t.min}</span></div>`}</div>
       <div class="hint">Default for ${EQ[ex.equip].label.toLowerCase()} exercises.</div>`
     :`${range}<div class="gl">Each week</div><div class="grp">${stp('addReps','Add reps',t.addReps)}</div>
-      <div class="gl">When every set hits ${it.perSet?'its target':t.max}</div><div class="grp">
+      <div class="gl">When every set hits ${it.perSet?'its goal':t.max}</div><div class="grp">
       <div class="gr" data-a="ruleEquip"><span>Equipment</span><span class="v">${EQ[t.equip].label} ›</span></div>
       ${bw?'':stp('addWeight','Add weight',t.addWeight+' lb')}</div>`;
   return `<div class="sh"><div class="c" data-a="dismiss">Cancel</div><div class="tt">${esc(ex.name)}</div><div class="d" data-a="ruleDone">Done</div></div>
   <div class="sbody"><div class="seg"><div class="${t.mode==='default'?'on':''}" data-a="ruleMode" data-m="default">Default</div><div class="${t.mode==='custom'?'on':''}" data-a="ruleMode" data-m="custom">Custom</div></div>
-  ${body}<div class="hint" style="margin-top:14px">Next target: <b>${wX(tg.w)}${tg.reps.join(' · ')}</b>${tg.chip?` <span style="color:var(--acc)">(${tg.chip})</span>`:''}</div></div>`;
+  ${body}<div class="hint" style="margin-top:14px">Next goal: <b>${wX(tg.w)}${tg.reps.join(' · ')}</b>${tg.chip?` <span style="color:var(--acc)">(${tg.chip})</span>`:''}</div></div>`;
 }
 A.ruleMode=(d,L)=>{L.tmp.mode=d.m;render(L)};
 A.ruleStep=(d,L)=>{const t=L.tmp,k=d.k,s=+d.d;
@@ -476,7 +476,7 @@ A.setEdit=(d,L)=>{const lv=S.live,c=lv.ex[lv.cur],s=c.sets[+d.i],ex=LIB(c.exId);
   push({type:'sheet',live:L,idx:+d.i,ex,tmp:{w:s.w,r:s.r},s,render:setEdHTML})};
 function setEdHTML(L){
   const t=L.tmp,s=L.s,bw=L.ex.equip==='bodyweight';
-  const was=(v,tv,u)=>v===tv?'<div class="was same">Same as target</div>':`<div class="was">${v>tv?'↑':'↓'} ${Math.abs(v-tv)}${u} from target</div>`;
+  const was=(v,tv,u)=>v===tv?'<div class="was same">Same as goal</div>':`<div class="was">${v>tv?'↑':'↓'} ${Math.abs(v-tv)}${u} from goal</div>`;
   const box=(k,lb,num,w)=>`<div class="bx"><div class="l">${lb}</div><div class="num">${num}</div><div class="pm"><div data-a="lvStep" data-k="${k}" data-d="-1">−</div><div data-a="lvStep" data-k="${k}" data-d="1">+</div></div>${w}</div>`;
   return `<div class="sh"><div class="c" data-a="dismiss">Cancel</div><div class="tt">${esc(L.ex.name)} · Set ${L.idx+1}</div><div style="min-width:60px"></div></div>
   <div class="big2">${bw?'':box('w','Weight',`${t.w}<small> lb</small>`,was(t.w,s.tw,' lb'))}${box('r','Reps',t.r,was(t.r,s.tr,t.r-s.tr===1||s.tr-t.r===1?' rep':' reps'))}</div>
