@@ -249,7 +249,7 @@ const fmtClock=ms=>{const s=Math.max(0,Math.floor(ms/1000)),h=Math.floor(s/3600)
 
 /* ---------- exercise demo video (profile screen, only when e.demo is set) ---------- */
 /* iOS Safari: the <video> exists up front with muted/playsinline attributes, and play() is called synchronously inside the tap handler. */
-const demoBtn=e=>e.demo?`<video class="dvid" data-a="demoPlay" muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback poster="${ASSET}img/demo/${e.demo}.jpg?v=2" src="${ASSET}img/demo/${e.demo}.mp4?v=2"></video><div class="dplay" data-a="demoPlay" role="button" aria-label="Play demo"><svg class="i-play" viewBox="0 0 24 24"><path d="M8.5 5.6v12.8c0 .8.9 1.3 1.6.9l10-6.4c.6-.4.6-1.3 0-1.7l-10-6.4c-.7-.4-1.6.1-1.6.9z"/></svg><svg class="i-pause" viewBox="0 0 24 24"><rect x="6.5" y="5" width="3.6" height="14" rx="1.2"/><rect x="13.9" y="5" width="3.6" height="14" rx="1.2"/></svg></div>`:'';
+const demoBtn=(e,v='')=>e.demo?`<video class="dvid" data-a="demoPlay" muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback poster="${ASSET}img/demo/${e.demo}${v}.jpg?v=3" src="${ASSET}img/demo/${e.demo}${v}.mp4?v=3"></video><div class="dplay" data-a="demoPlay" role="button" aria-label="Play demo"><svg class="i-play" viewBox="0 0 24 24"><path d="M8.5 5.6v12.8c0 .8.9 1.3 1.6.9l10-6.4c.6-.4.6-1.3 0-1.7l-10-6.4c-.7-.4-1.6.1-1.6.9z"/></svg><svg class="i-pause" viewBox="0 0 24 24"><rect x="6.5" y="5" width="3.6" height="14" rx="1.2"/><rect x="13.9" y="5" width="3.6" height="14" rx="1.2"/></svg></div>`:'';
 function demoToggle(el,ev){
   if(ev){ev.stopPropagation();ev.preventDefault();}
   const box=el.closest('.pimg'),v=box&&box.querySelector('video');if(!v)return;
