@@ -159,7 +159,7 @@ function detailHTML(L){
   <div class="scroll"><div class="hero"><div class="big" ${bg(iconImg(w.icon))}></div><div class="ttl">${esc(w.name)}</div>
   <div class="meta">${d?'Last done '+ago(d,true).toLowerCase():'Not done yet'}</div></div>
   ${w.items.length?`<div class="tg"><div class="sect">${doneWk?"Next Week's Target":"This Week's Target"}</div>${doneWk?'':'<span class="nw">NEW</span>'}</div>
-  <div class="list">${rows}</div>`:`<div class="list"><div class="emptyl">No exercises yet.<br>Tap <b style="color:var(--acc)">Edit</b> to add some.</div></div>`}
+  <div class="list tgt">${rows}</div>`:`<div class="list"><div class="emptyl">No exercises yet.<br>Tap <b style="color:var(--acc)">Edit</b> to add some.</div></div>`}
   <div class="spacer"></div></div>
   ${w.items.length?`<div class="bottombar"><div class="start" data-a="start">${live?'Resume Workout':'▶&nbsp; Start Workout'}</div></div>`:''}`;
 }
