@@ -75,8 +75,8 @@ let S;
 const LIB=id=>LIBB[id]||(S.custom&&S.custom[id])||{id,name:'Exercise',equip:'dumbbell',muscle:'Chest',also:[],min:8,max:10,startW:20};
 const allEx=()=>[...Object.values(LIBB),...Object.values(S.custom||{})];
 const exImg=e=>e.photo||(ASSET+'img/ex/'+(e.img||(e.custom?'default':'generic'))+'.png?v=2');
-const exBg=e=>`style="background-image:url('${exImg(e)}')${e.photo?'':e.img?';background-color:transparent;background-size:contain':';background-color:#28282a'}"`;
-const iconImg=ic=>ASSET+'img/icons/'+ic+'.png';
+const exBg=e=>`style="background-image:url('${exImg(e)}')${e.photo?';background-size:cover':e.img?';background-color:transparent;background-size:contain':';background-color:#28282a'}"`;
+const iconImg=ic=>ASSET+'img/icons/'+ic+'.png?v=2';
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){console.warn(e)}}
 function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.v===1)return s}catch(e){}return null}
 

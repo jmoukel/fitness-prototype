@@ -42,7 +42,7 @@ body.fl .glass{background:none;box-shadow:none}
 /* list */
 .wr{display:flex;align-items:center;gap:9px;background:var(--card);border-radius:22px;padding:8px 12px 8px 8px;margin-bottom:6px;min-height:56px;cursor:pointer}
 .wr:active,.xr:active{background:#2a2a2c}
-.wi{width:38px;height:38px;border-radius:19px;background:#fff center/cover no-repeat;flex:none}
+.wi{width:38px;height:38px;border-radius:19px;background:transparent center/contain no-repeat;flex:none}
 .wt{flex:1;min-width:0}
 .wn{font-size:16px;font-weight:600;line-height:1.15;overflow-wrap:anywhere}
 .wm{font-size:13px;color:var(--gray);margin-top:2px}
@@ -77,7 +77,7 @@ body.fl .glass{background:none;box-shadow:none}
 /* main page */
 .lvm{position:absolute;inset:0;padding:38px 10px 14px;display:flex;flex-direction:column;touch-action:none}
 .exh{display:flex;align-items:center;gap:7px;padding:0 4px}
-.exh .xi{width:28px;height:28px;border-radius:8px;background:#fff center/cover no-repeat;flex:none}
+.exh .xi{width:28px;height:28px;border-radius:8px;background:transparent center/contain no-repeat;flex:none}
 .exh .t{min-width:0;flex:1}
 .exn{font-size:15px;font-weight:700;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .setn{font-size:12px;color:var(--gray);margin-top:1px}.setn b{color:#fff;font-weight:600}
@@ -114,7 +114,7 @@ body.fl .glass{background:none;box-shadow:none}
 /* exercises page */
 .xr{display:flex;align-items:center;gap:8px;background:var(--card);border-radius:18px;padding:7px 10px 7px 7px;margin-bottom:5px;cursor:pointer;border:2px solid transparent}
 .xr.cur{border-color:var(--acc)}
-.xr .xi{width:32px;height:32px;border-radius:9px;background:#fff center/cover no-repeat;flex:none}
+.xr .xi{width:32px;height:32px;border-radius:9px;background:transparent center/contain no-repeat;flex:none}
 .xr .n{font-size:14px;font-weight:600;line-height:1.15}
 .xr .m{font-size:12px;color:var(--gray);margin-top:1px}
 .xr.fin .n{color:#c7c7cc}
