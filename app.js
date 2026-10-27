@@ -270,7 +270,7 @@ function ruleHTML(L){
       ${bw?'':stp('addWeight','Add weight',t.addWeight+' lb')}</div>`;
   return `<div class="sh"><div class="c" data-a="dismiss">Cancel</div><div class="tt">${esc(ex.name)}</div><div class="d" data-a="ruleDone">Done</div></div>
   <div class="sbody"><div class="seg"><div class="${t.mode==='default'?'on':''}" data-a="ruleMode" data-m="default">Default</div><div class="${t.mode==='custom'?'on':''}" data-a="ruleMode" data-m="custom">Custom</div></div>
-  ${body}<div class="hint" style="margin-top:14px">Next target: <b>${wLabel(tg.w)} × ${tg.reps.join(' · ')}</b>${tg.chip?` <span style="color:var(--acc)">(${tg.chip})</span>`:''}</div></div>`;
+  ${body}<div class="hint" style="margin-top:14px">Next target: <b>${wX(tg.w)}${tg.reps.join(' · ')}</b>${tg.chip?` <span style="color:var(--acc)">(${tg.chip})</span>`:''}</div></div>`;
 }
 A.ruleMode=(d,L)=>{L.tmp.mode=d.m;render(L)};
 A.ruleStep=(d,L)=>{const t=L.tmp,k=d.k,s=+d.d;
@@ -330,7 +330,7 @@ function profHTML(L){
   <div class="cards"><div class="cd"><div class="l">Best Set</div><div class="v">${best?(bw?`${best.r}<small> reps</small>`:`${best.w}<small> lb</small> × ${best.r}`):'—'}</div></div>
   <div class="cd"><div class="l">Sessions</div><div class="v">${hist.length}</div></div></div>
   <div class="sect" style="margin-top:22px">History</div>
-  <div class="list hist">${hist.length?hist.slice(0,10).map(h=>`<div class="ex"><div class="t"><div class="n">${fmtDate(h.date)}</div></div><div class="m">${wLabel(h.sets[0].w)} × ${h.sets.map(s=>s.r).join(' · ')}</div></div>`).join(''):
+  <div class="list hist">${hist.length?hist.slice(0,10).map(h=>`<div class="ex"><div class="t"><div class="n">${fmtDate(h.date)}</div></div><div class="m">${wX(h.sets[0].w)}${h.sets.map(s=>s.r).join(' · ')}</div></div>`).join(''):
     '<div class="emptyl">No history yet. Your sets show up here after you log them.</div>'}</div>
   <div class="spacer"></div></div>
   ${L.addL?`<div class="bottombar"><div class="start ${added?'ghost':''}" data-a="profAdd">${added?'✓ Added to Workout':'+ Add to Workout'}</div></div>`:''}`;
@@ -375,7 +375,7 @@ A.start=(d,L)=>{
   const w=S.workouts[L.wid];
   if(S.live&&S.live.wid===w.id)return openLive();
   const go=()=>{S.live={wid:w.id,start:Date.now(),cur:0,rest:null,ex:w.items.map(it=>{const t=target(it),lp=lastPerf(it.exId);
-    return {exId:it.exId,last:lp?`${wLabel(lp.sets[0].w)} × ${lp.sets.map(s=>s.r).join(' · ')}`:null,
+    return {exId:it.exId,last:lp?`${wX(lp.sets[0].w)}${lp.sets.map(s=>s.r).join(' · ')}`:null,
       sets:t.reps.map((r,i)=>({w:t.w,r,tw:t.w,tr:r,wUp:t.wUp,dr:t.fresh||t.wUp?0:r-t.last[i],done:false}))}})};save();openLive()};
   if(S.live)actionSheet('Another workout is in progress',`${S.workouts[S.live.wid]?S.workouts[S.live.wid].name:'A workout'} is still running.`,[
     {label:'Resume It',cls:'bold',fn:()=>openLive()},{label:'Discard It & Start This One',cls:'red',fn:()=>{S.live=null;go()}}]);
@@ -393,11 +393,11 @@ function liveHTML(){
     else if(s.dr>0)badge=`<span class="up">+${s.dr}</span>`;
     const wTxt=bw?'Body':`${s.w} <small>lb</small>`, rCls=!s.done&&(s.dr>0||s.wUp)?'acc':'', wCls=!s.done&&s.wUp&&!bw?'acc':'';
     return `<div class="st ${s.done?'dn':''} ${i===firstOpen?'on':''}"><span class="k">Set ${i+1}</span>
-      <span class="val" data-a="setEdit" data-i="${i}"><span class="${wCls}">${wTxt}</span> × <span class="${rCls}">${s.r}</span>${badge}</span>
+      <span class="val" data-a="setEdit" data-i="${i}">${bw?'':`<span class="${wCls}">${wTxt}</span> × `}<span class="${rCls}">${s.r}</span>${badge}</span>
       <div class="ckw" data-a="setTog" data-i="${i}"><div class="ck ${s.done?'y':i===firstOpen?'go':''}">${s.done?'✓':''}</div></div></div>`}).join('');
   const others=lv.ex.map((e,i)=>{if(i===lv.cur)return '';const x=LIB(e.exId),dn=e.sets.every(s=>s.done),cnt=e.sets.filter(s=>s.done).length;
     return `<div class="row2 ${dn?'fin':''}" data-a="liveSwitch" data-i="${i}"><div class="ic" ${exBg(x)}></div><div class="t"><div class="n">${esc(x.name)}</div>
-    <div class="m">${dn?'Done · ':cnt?cnt+' of '+e.sets.length+' sets · ':''}${wLabel(e.sets[0].tw)} × ${e.sets.map(s=>s.tr).join(' · ')}</div></div>${dn?'<div class="chk">✓</div>':'<span style="color:#48484a;font-size:20px">›</span>'}</div>`}).join('');
+    <div class="m">${dn?'Done · ':cnt?cnt+' of '+e.sets.length+' sets · ':''}${wX(e.sets[0].tw)}${e.sets.map(s=>s.tr).join(' · ')}</div></div>${dn?'<div class="chk">✓</div>':'<span style="color:#48484a;font-size:20px">›</span>'}</div>`}).join('');
   const doneEx=lv.ex.filter(e=>e.sets.every(s=>s.done)).length;
   return `<div class="tb"><div class="tm">${esc(w.name)}</div><div class="endb" data-a="liveEnd">End</div></div>
   <div class="scroll"><div class="elab">Elapsed</div><div class="clock" id="clk">${fmtClock(Date.now()-lv.start)}</div>

@@ -87,6 +87,7 @@ function ago(t,long){const days=Math.round((startOfDay(Date.now())-startOfDay(t)
   if(days<=0)return 'Today';if(days===1)return 'Yesterday';return long?days+' days ago':days+'d ago'}
 const fmtDate=t=>new Date(t).toLocaleDateString('en-US',{month:'short',day:'numeric'});
 const wLabel=w=>w>0?w+' lb':'Body';
+const wX=w=>w>0?w+' lb × ':'';
 
 function item(exId,sets,min,max){const e=LIB(exId);return {exId,sets:sets||3,min:min||e.min,max:max||e.max,perSet:null,rule:null}}
 function mkWorkout(name,icon,items,rest){return {id:uid(),name,icon,rest:rest==null?180:rest,items}}
@@ -142,10 +143,10 @@ function target(it){
   return {w:lastW,reps,wUp:false,changed:reps.map((r,i)=>r!==lr[i]),chip:added>0?'+'+added+(added>1?' reps':' rep'):null,last:lr};
 }
 function tvHTML(t){
-  if(t.fresh) return `<div class="tv pl">${wLabel(t.w)} × ${t.reps.join(' · ')}</div>`;
-  const w=t.wUp?`<b>${wLabel(t.w)}</b>`:wLabel(t.w);
+  if(t.fresh) return `<div class="tv pl">${wX(t.w)}${t.reps.join(' · ')}</div>`;
+  const w=!(t.w>0)?'':(t.wUp?`<b>${wLabel(t.w)}</b> × `:wLabel(t.w)+' × ');
   const reps=t.wUp?`<b>${t.reps.join(' · ')}</b>`:t.reps.map((r,i)=>t.changed[i]?`<b>${r}</b>`:r).join(' · ');
-  return `<div class="tv">${w} × ${reps}</div>`;
+  return `<div class="tv">${w}${reps}</div>`;
 }
 const pillTxt=it=>it.perSet?`${it.perSet.length} × ${it.perSet.join('/')}`:`${it.sets} × ${it.min===it.max?it.min:it.min+'–'+it.max}`;
 const restTxt=s=>!s?'Off':(s%60?(s/60).toFixed(1).replace('.0',''):s/60)+' min';
