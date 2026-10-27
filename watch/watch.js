@@ -72,7 +72,7 @@ function startHTML(V){
     const rp=t.fresh?t.reps.join(' · '):t.wUp?`<b>${t.reps.join(' · ')}</b>`:t.reps.map((r,i)=>t.changed[i]?`<b>${r}</b>`:r).join(' · ');
     return `<div class="tr"><div class="n">${esc(ex.name)}</div><div class="v rd">${wl} × ${rp}</div></div>`}).join('');
   return `${hd('')}<div class="bd" data-keep="s">
-    <div class="sh"><div class="shr"><div class="wi" ${bgs(iconImg(w.icon))}></div><div class="nm">${esc(w.name)}</div></div><div class="ld">${d?'Last done '+ago(d,true).toLowerCase():'Not done yet'}</div></div>
+    <div class="sh"><div class="shr"><div class="wi" ${bgs(iconImg(w.icon))}></div><div class="nm">${esc(w.name)}</div></div></div>
     ${w.items.length?`<div class="tgh">${dw?"Next Week's Target":"This Week's Target"}${dw?'':'<span class="nw">NEW</span>'}</div>${rows}`:'<div class="cap">No exercises yet. Add some on iPhone.</div>'}
     <div class="spc"></div></div>
   ${w.items.length?`<div class="botb"><div class="btn" data-a="start">${live?'Resume':'<span style="font-size:14px">▶</span> Start'}</div></div>`:''}`;
