@@ -4,7 +4,7 @@ const scr=$('#screen'), stack=[], A={};
 const PW=208;
 let busyUntil=0, K=1;
 const bgs=u=>`style="background-image:url('${u}')"`;
-const exBgs=e=>`style="background-image:url('${exImg(e)}')${e.img||e.photo?'':';background-color:#28282a'}"`;
+const exBgs=e=>`style="background-image:url('${exImg(e)}')${e.photo?'':e.img?';background-color:transparent;background-size:contain':';background-color:#28282a'}"`;
 const nowT=()=>{const d=new Date();return (d.getHours()%12||12)+':'+String(d.getMinutes()).padStart(2,'0')};
 const tm=()=>`<div class="tm" data-tm>${nowT()}</div>`;
 const hd=(title,back=true)=>`<div class="hd">${back?'<div class="bk" data-a="back" aria-label="Back"></div>':''}<div class="ht">${esc(title||'')}</div>${tm()}</div>`;
