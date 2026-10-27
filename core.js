@@ -197,6 +197,24 @@ const isThisWeek=t=>t>=weekStart(Date.now());
 function ago(t,long){const days=Math.round((startOfDay(Date.now())-startOfDay(t))/DAY);
   if(days<=0)return 'Today';if(days===1)return 'Yesterday';return long?days+' days ago':days+'d ago'}
 const fmtDate=t=>new Date(t).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+function whenLabel(t){const days=Math.round((startOfDay(Date.now())-startOfDay(t))/DAY);
+  if(days<=0)return 'Today';if(days===1)return 'Yesterday';if(days<=6)return new Date(t).toLocaleDateString('en-US',{weekday:'long'});
+  return days<=13?'Last week':fmtDate(t)}
+/* edit a logged session: build an editable copy, then write it back into the same record */
+const latestSession=wid=>S.sessions.find(x=>x.wid===wid)||null;
+function logFromSession(ses){
+  const w=S.workouts[ses.wid],items=w?w.items:[],ids=items.map(i=>i.exId);
+  ses.ex.forEach(e=>{if(!ids.includes(e.exId))ids.push(e.exId)});
+  return {sid:ses.id,cur:0,ex:ids.map(id=>{const it=items.find(i=>i.exId===id),e=ses.ex.find(x=>x.exId===id),lg=e?e.sets:[];
+    const n=Math.max(lg.length,it?bounds(it).length:0,1),w0=lg.length?lg[lg.length-1].w:(it?target(it).w:0);
+    return {exId:id,sets:Array.from({length:n},(_,i)=>lg[i]?{w:lg[i].w,r:lg[i].r,done:true}:{w:w0,r:0,done:false})}})};
+}
+function applyLog(log){
+  const ses=S.sessions.find(x=>x.id===log.sid);if(!ses)return;
+  ses.ex=log.ex.map(e=>({exId:e.exId,sets:e.sets.filter(s=>s.done&&s.r>0).map(s=>({w:s.w,r:s.r}))})).filter(e=>e.sets.length);
+  save();
+}
+const doneRow=wid=>`<div class="grp dnrow"><div class="gr" data-a="viewLog" data-id="${wid}"><span class="dl"><span class="chk">✓</span>Done ${whenLabel(latestSession(wid).date)}</span><span class="v">View Log ›</span></div></div>`;
 const wLabel=w=>w>0?w+' lb':'Body';
 const wX=w=>w>0?w+' lb × ':'';
 

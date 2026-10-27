@@ -130,3 +130,6 @@ html.wide{--sat:0px;--sab:0px}
 .wide .main{overflow:hidden}
 
 /* desktop modal is #1c1c1e; the clip's background is pure black, so lighten-blend it (not used on the iPhone layout) */
+.wide .pane .grp.dnrow{margin:0 0 20px;border-radius:20px}.wide .pane .dnrow .gr{padding:16px 24px;font-size:18px}
+.wide .side .elab.lg{margin:8px 8px 18px}
+.wide .tbar.lg{display:grid}

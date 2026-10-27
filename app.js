@@ -157,7 +157,8 @@ function detailHTML(L){
   return `<div class="nav"><div class="b" data-a="back"><span>‹</span>${esc(planOf(w.id).name)}</div><div class="fade" data-a="edit">Edit</div></div>
   <div class="scroll"><div class="hero"><div class="big" ${bg(iconImg(w.icon))}></div><div class="ttl">${esc(w.name)}</div>
 </div>
-  ${w.items.length?`<div class="tg">${doneWk?`<div class="sect">Next Week's Goal</div>`:'<span class="nw">GOAL</span>'}</div>
+  ${w.items.length&&doneWk?doneRow(w.id):''}
+  ${w.items.length?`<div class="tg"><span class="nw">GOAL</span></div>
   <div class="list tgt">${rows}</div>`:`<div class="list"><div class="emptyl">No exercises yet.<br>Tap <b style="color:var(--acc)">Edit</b> to add some.</div></div>`}
   <div class="spacer"></div></div>
   ${w.items.length?`<div class="bottombar"><div class="start" data-a="start">${live?'Resume Workout':'▶&nbsp; Start Workout'}</div></div>`:''}`;
@@ -381,7 +382,8 @@ A.start=(d,L)=>{
 };
 function openLive(instant){push({type:'full',render:liveHTML},instant)}
 const allDone=lv=>lv.ex.every(e=>e.sets.every(s=>s.done));
-function liveHTML(){
+function liveHTML(L){
+  if(L&&L.log)return logHTML(L);
   const lv=S.live;if(!lv)return '';const w=S.workouts[lv.wid]||{name:'Workout'};
   const n=lv.ex.length, c=lv.ex[lv.cur], ex=LIB(c.exId), bw=ex.equip==='bodyweight', fin=allDone(lv);
   const firstOpen=c.sets.findIndex(s=>!s.done);
@@ -406,29 +408,47 @@ function liveHTML(){
   <div class="spacer"></div></div>
   <div class="rest ${lv.rest?'on':''}" id="rest"><div class="bar" id="rbar"></div><div class="rl">Rest<b id="rt">${lv.rest?fmtClock(lv.rest.end-Date.now()+999):'0:00'}</b></div><div class="sk" data-a="restSkip">Skip</div></div>`;
 }
+
+/* ---------- view / edit a logged workout ---------- */
+A.viewLog=(d,L)=>{const ses=latestSession(d.id||L.wid);if(ses)push({type:'full',log:logFromSession(ses),when:whenLabel(ses.date),wid:ses.wid,render:liveHTML})};
+A.logCancel=()=>pop();
+A.logDone=(d,L)=>{applyLog(L.log);pop()};
+function logHTML(L){
+  const lg=L.log,w=S.workouts[L.wid]||{name:'Workout'},c=lg.ex[lg.cur],ex=LIB(c.exId),bw=ex.equip==='bodyweight';
+  const firstOpen=c.sets.findIndex(s=>!s.done);
+  const sets=c.sets.map((s,i)=>`<div class="st ${s.done?'dn':''} ${i===firstOpen?'on':''}"><span class="k">Set ${i+1}</span>
+    <span class="val" data-a="setEdit" data-i="${i}">${bw?'':`${s.w} <small>lb</small> × `}${s.r||'<span class="acc">—</span>'}</span>
+    <div class="ckw" data-a="setTog" data-i="${i}"><div class="ck ${s.done?'y':i===firstOpen?'go':''}">${s.done?'✓':''}</div></div></div>`).join('');
+  const sub=e=>`${wX(e.sets[0].w)}${e.sets.map(s=>s.r||'—').join(' · ')}`;
+  const curHead=`<div class="ch"><div class="ic" ${exBg(ex)}></div><div class="t"><div class="n">${esc(ex.name)}</div></div></div>`;
+  const bar=`<div class="tb lg"><div class="fade" data-a="logCancel">Cancel</div><div class="tm">${esc(w.name)}</div><div class="fade logd" data-a="logDone">Done</div></div>`;
+  const row=(e,i)=>{const x=LIB(e.exId);return `<div class="row2" data-a="liveSwitch" data-i="${i}"><div class="ic" ${exBg(x)}></div><div class="t"><div class="n">${esc(x.name)}</div><div class="m">${sub(e)}</div></div><span style="color:#48484a;font-size:20px">›</span></div>`};
+  const lab=`<div class="elab lg">${esc(L.when)}</div>`;
+  return bar.replace('@B@','tb')+`<div class="scroll">${lab}<div class="cur">${curHead}${sets}</div>${lg.ex.map((e,i)=>i===lg.cur?'':row(e,i)).join('')}<div class="spacer"></div></div>`;
+}
 function afterLog(lv,setNowDone){
   const w=S.workouts[lv.wid],c=lv.ex[lv.cur];
   if(setNowDone&&w&&w.rest>0&&!allDone(lv))lv.rest={end:Date.now()+w.rest*1000,total:w.rest*1000};
   if(allDone(lv))lv.rest=null;
   if(setNowDone&&c.sets.every(s=>s.done)){const nx=lv.ex.findIndex((e,i)=>i!==lv.cur&&e.sets.some(s=>!s.done));
-    if(nx>=0)setTimeout(()=>{if(S.live===lv&&lv.ex[lv.cur]===c){lv.cur=nx;save();const L=stack.find(x=>x.type==='full');L&&render(L)}},650)}
+    if(nx>=0)setTimeout(()=>{if(S.live===lv&&lv.ex[lv.cur]===c){lv.cur=nx;save();const L=stack.find(x=>x.type==='full'&&!x.log);L&&render(L)}},650)}
   save();
 }
-A.setTog=(d,L)=>{const lv=S.live,s=lv.ex[lv.cur].sets[+d.i];s.done=!s.done;if(!s.done&&lv.rest)lv.rest=null;afterLog(lv,s.done);render(L)};
-A.liveSwitch=(d,L)=>{S.live.cur=+d.i;save();render(L);const sc=$('.scroll',L.el);sc&&sc.scrollTo({top:0,behavior:'smooth'})};
+A.setTog=(d,L)=>{if(L.log){const s=L.log.ex[L.log.cur].sets[+d.i];s.done=!s.done;return render(L)}const lv=S.live,s=lv.ex[lv.cur].sets[+d.i];s.done=!s.done;if(!s.done&&lv.rest)lv.rest=null;afterLog(lv,s.done);render(L)};
+A.liveSwitch=(d,L)=>{if(L.log){L.log.cur=+d.i;render(L);const sc=$('.scroll',L.el);sc&&sc.scrollTo({top:0,behavior:'smooth'});return}S.live.cur=+d.i;save();render(L);const sc=$('.scroll',L.el);sc&&sc.scrollTo({top:0,behavior:'smooth'})};
 A.restSkip=(d,L)=>{S.live.rest=null;save();tick()};
-A.setEdit=(d,L)=>{const lv=S.live,c=lv.ex[lv.cur],s=c.sets[+d.i],ex=LIB(c.exId);
+A.setEdit=(d,L)=>{const lv=L.log||S.live,c=lv.ex[lv.cur],s=c.sets[+d.i],ex=LIB(c.exId);
   push({type:'sheet',live:L,idx:+d.i,ex,tmp:{w:s.w,r:s.r},s,render:setEdHTML})};
 function setEdHTML(L){
   const t=L.tmp,s=L.s,bw=L.ex.equip==='bodyweight';
-  const was=(v,tv,u)=>v===tv?'<div class="was same">Same as goal</div>':`<div class="was">${v>tv?'↑':'↓'} ${Math.abs(v-tv)}${u} from goal</div>`;
+  const was=(v,tv,u)=>L.live.log?'':v===tv?'<div class="was same">Same as goal</div>':`<div class="was">${v>tv?'↑':'↓'} ${Math.abs(v-tv)}${u} from goal</div>`;
   const box=(k,lb,num,w)=>`<div class="bx"><div class="l">${lb}</div><div class="num">${num}</div><div class="pm"><div data-a="lvStep" data-k="${k}" data-d="-1">−</div><div data-a="lvStep" data-k="${k}" data-d="1">+</div></div>${w}</div>`;
   return `<div class="sh"><div class="c" data-a="dismiss">Cancel</div><div class="tt">${esc(L.ex.name)} · Set ${L.idx+1}</div><div style="min-width:60px"></div></div>
   <div class="big2">${bw?'':box('w','Weight',`${t.w}<small> lb</small>`,was(t.w,s.tw,' lb'))}${box('r','Reps',t.r,was(t.r,s.tr,t.r-s.tr===1||s.tr-t.r===1?' rep':' reps'))}</div>
   <div class="log" data-a="lvLog">${s.done?'Save Set':'✓ Log Set'}</div>`;
 }
 A.lvStep=(d,L)=>{const t=L.tmp,st=L.ex.equip==='machine'?10:5;if(d.k==='w')t.w=Math.max(0,t.w+ +d.d*st);else t.r=Math.max(0,Math.min(99,t.r+ +d.d));render(L)};
-A.lvLog=(d,L)=>{const s=L.s,was=s.done;s.w=L.tmp.w;s.r=L.tmp.r;s.done=true;pop();afterLog(S.live,!was);const F=stack.find(x=>x.type==='full');F&&render(F)};
+A.lvLog=(d,L)=>{const s=L.s,was=s.done;s.w=L.tmp.w;s.r=L.tmp.r;s.done=true;pop();if(L.live.log){render(L.live);return}afterLog(S.live,!was);const F=L.live;F&&render(F)};
 A.liveEnd=()=>{const lv=S.live,tot=lv.ex.reduce((a,e)=>a+e.sets.length,0),dn=lv.ex.reduce((a,e)=>a+e.sets.filter(s=>s.done).length,0);
   actionSheet('End workout?',`${dn} of ${tot} sets logged · ${fmtClock(Date.now()-lv.start)}`,[
     {label:'Finish & Save',cls:'bold'+(dn?'':' dis'),fn:finishLive},{label:'Discard Workout',cls:'red',fn:()=>{S.live=null;save();pop();toast('Workout discarded')}}])};
@@ -441,7 +461,7 @@ function finishLive(){
   popTo(stack[0]);toast(`Saved <b>${esc(w?w.name:'Workout')}</b> · ${Math.max(1,Math.round(ses.dur/60e3))} min`);
 }
 function tick(){
-  const lv=S&&S.live;if(!lv)return;const F=stack.find(x=>x.type==='full');if(!F||!F.el)return;
+  const lv=S&&S.live;if(!lv)return;const F=stack.find(x=>x.type==='full'&&!x.log);if(!F||!F.el)return;
   const clk=$('#clk',F.el);if(clk)clk.textContent=fmtClock(Date.now()-lv.start);
   const r=$('#rest',F.el);if(!r)return;
   if(lv.rest&&Date.now()>=lv.rest.end){lv.rest=null;save();try{navigator.vibrate&&navigator.vibrate(200)}catch(_){}}
