@@ -361,7 +361,7 @@ function profHTML(L){
   let best=null;hist.forEach(h=>h.sets.forEach(st=>{const sc=bw?st.r:st.w*(1+st.r/30);if(!best||sc>best.sc)best={sc,w:st.w,r:st.r}}));
   const added=L.addL&&L.addL.edit.draft.items.some(i=>i.exId===e.id);
   const histRows=hist.length?hist.slice(0,10).map(h=>`<div class="ex"><div class="t"><div class="n">${fmtDate(h.date)}</div></div><div class="m">${wX(h.sets[0].w)}${h.sets.map(s=>s.r).join(' · ')}</div></div>`).join(''):
-    '<div class="emptyl">No history yet. Your sets show up here after you log them.</div>';
+    '<div class="emptyl">No history yet</div>';
   const bestTxt=best?(bw?`${best.r}<small> reps</small>`:`${best.w}<small> lb</small> × ${best.r}`):'—';
   if(WIDE)return `<div class="nav"><div class="b" data-a="back"><span>‹</span>${esc(L.backLabel)}</div><div class="star ${fav?'':'off'}" data-a="fav">${fav?'★':'☆'}</div></div>
   <div class="pgrid"><div class="pl"><div class="pimg" ${exBg(e)}>${demoBtn(e,'-w')}</div><div class="pt">${esc(e.name)}</div>
@@ -373,7 +373,7 @@ function profHTML(L){
   ${best?`<div class="cards"><div class="cd"><div class="l">Best Set</div><div class="v">${bw?`${best.r}<small> reps</small>`:`${best.w}<small> lb</small> × ${best.r}`}</div></div></div>`:''}
   <div class="sect" style="margin-top:22px">History</div>
   <div class="list hist">${hist.length?hist.slice(0,10).map(h=>`<div class="ex"><div class="t"><div class="n">${fmtDate(h.date)}</div></div><div class="m">${wX(h.sets[0].w)}${h.sets.map(s=>s.r).join(' · ')}</div></div>`).join(''):
-    '<div class="emptyl">No history yet. Your sets show up here after you log them.</div>'}</div>
+    '<div class="emptyl">No history yet</div>'}</div>
   <div class="spacer"></div></div>
   ${L.addL?`<div class="bottombar"><div class="start ${added?'ghost':''}" data-a="profAdd">${added?'✓ Added to Workout':'+ Add to Workout'}</div></div>`:''}`;
 }
