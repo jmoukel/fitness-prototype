@@ -230,9 +230,8 @@ box-shadow:0 -6px 30px rgba(0,0,0,.7);transform:translateY(140%);transition:tran
 .ex.ed .m{white-space:normal;font-size:13px;line-height:1.2}
 .ex.ed .pill{flex-shrink:0}
 
-/* target list: separated, taller rows */
-.list.tgt{background:none;border-radius:0;overflow:visible;display:flex;flex-direction:column;gap:10px}
-.list.tgt .ex{border:0;border-radius:18px;padding:16px;gap:14px}
+/* target list: one card, taller rows */
+.list.tgt .ex{padding:16px;gap:14px}
 .list.tgt .ex .ic{width:56px;height:56px;border-radius:13px}
 .list.tgt .ex .n{font-size:18px}
 .list.tgt .ex .tv{font-size:17px;margin-top:6px}
