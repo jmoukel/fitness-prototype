@@ -325,3 +325,22 @@ function demoToggle(el,ev){
   if(p&&p.then)p.then(()=>{demoDraw(v,cv);box.classList.add('playing');demoLoop(v,cv)}).catch(err=>{console.warn('demo play() rejected',err&&err.name);box.classList.remove('playing');});
   else box.classList.add('playing');
 }
+
+/* ---------- exercise switch: visual order + FLIP animation ---------- */
+function ordOf(o){const n=o.ex.length;if(!o.ord||o.ord.length!==n)o.ord=o.ex.map((_,i)=>i);return o.ord}
+function setCur(o,i){const old=o.cur;o.ord=[i,...ordOf(o).filter(k=>k!==i&&k!==old)];if(old!==i)o.ord.push(old);o.cur=i}
+function flipSwitch(L,mutate){
+  const q=()=>[...L.el.querySelectorAll('[data-k]')],H=e=>e.getBoundingClientRect().height;
+  const first=new Map(q().map(e=>{const r=e.getBoundingClientRect();return [e.dataset.k,{top:r.top,h:r.height}]}));
+  mutate();render(L);
+  const sc=[...L.el.querySelectorAll('.scroll')].pop();if(sc)sc.scrollTop=0;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const els=q().filter(e=>first.has(e.dataset.k)),f=e=>first.get(e.dataset.k);
+  const h1=new Map(els.map(e=>[e,H(e)])),morph=els.filter(e=>Math.abs(f(e).h-h1.get(e))>1);
+  morph.forEach(e=>{e.style.boxSizing='border-box';e.style.overflow='hidden';e.style.height=f(e).h+'px'});
+  const t0=new Map(els.map(e=>[e,e.getBoundingClientRect().top]));
+  morph.forEach(e=>{e.style.height=''});
+  const opt={duration:350,easing:'cubic-bezier(.2,.8,.2,1)',fill:'backwards'};
+  els.forEach(e=>{const dy=f(e).top-t0.get(e);if(dy)e.animate([{transform:`translateY(${dy}px)`},{transform:'none'}],opt)});
+  morph.forEach(e=>{const b=e.animate([{height:f(e).h+'px'},{height:h1.get(e)+'px'}],opt);b.onfinish=b.oncancel=()=>{e.style.boxSizing='';e.style.overflow=''}});
+}
