@@ -156,3 +156,10 @@ body.fl .glass{background:none;box-shadow:none}
 .dots{bottom:0;height:16px;align-items:center;background:linear-gradient(rgba(0,0,0,0),#000 60%)}
 .vx{margin:0 2px 10px}
 #foot{white-space:nowrap}
+
+.ht.pl{cursor:pointer;display:flex;align-items:center;gap:4px;flex:0 1 auto;overflow:visible;padding:6px 0}
+.ht.pl span{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.hd .ht.pl+.tm{margin-left:auto}
+.chv{flex:none;width:7px;height:7px;border-right:2.5px solid var(--acc);border-bottom:2.5px solid var(--acc);transform:rotate(45deg) translate(-1px,-1px);margin-left:2px;border-radius:1px}
+.pr2.on .wn{color:var(--acc)}
+.pr2{min-height:56px}

@@ -49,10 +49,18 @@ function listHTML(){
   const row=w=>{const d=lastDone(w.id),dn=doneWk(w),live=S.live&&S.live.wid===w.id;
     return `<div class="wr ${dn?'dn':''}" data-a="openW" data-id="${w.id}"><div class="wi" ${bgs(iconImg(w.icon))}></div>
     <div class="wt"><div class="wn">${esc(w.name)}</div><div class="wm" ${live?'style="color:var(--acc)"':''}>${live?'In progress':d?ago(d,true):'Not done yet'}</div></div>${dn?'<div class="wc">✓</div>':''}</div>`};
-  return `${hd(p.name,false)}<div class="bd" data-keep="l">${todo.map(row).join('')}${done.map(row).join('')}
+  return `<div class="hd"><div class="ht pl" data-a="plans" role="button" aria-label="Plans"><span>${esc(p.name)}</span><i class="chv"></i></div>${tm()}</div><div class="bd" data-keep="l">${todo.map(row).join('')}${done.map(row).join('')}
   ${ws.length?'':'<div class="cap">No workouts in this plan yet.</div>'}
-  <div class="cap">${done.length} of ${ws.length} done this week<br>Change plans on iPhone</div></div>`;
+  <div class="cap">${done.length} of ${ws.length} done this week</div></div>`;
 }
+
+/* ---------- 1b. plans ---------- */
+function plansHTML(){
+  const a=curPlan().id;
+  return `${hd('Plans')}<div class="bd" data-keep="p">${S.plans.map(p=>`<div class="wr pr2 ${p.id===a?'on':''}" data-a="pickPlan" data-id="${p.id}"><div class="wt"><div class="wn">${esc(p.name)}</div><div class="wm">${p.workouts.length} workout${p.workouts.length===1?'':'s'}</div></div>${p.id===a?'<div class="wc">✓</div>':''}</div>`).join('')}</div>`;
+}
+A.plans=()=>{if(S.live&&S.workouts[S.live.wid]){toastW('Finish or end your workout to switch plans');return}push({render:plansHTML})};
+A.pickPlan=d=>{S.activePlan=d.id;save();pop()};
 A.openW=d=>push({render:startHTML,wid:d.id});
 
 /* ---------- 2. workout start ---------- */
