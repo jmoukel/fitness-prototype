@@ -128,3 +128,6 @@ html.wide{--sat:0px;--sab:0px}
 
 .wide .main .rest{transform:translateY(220%)}.wide .main .rest.on{transform:none}
 .wide .main{overflow:hidden}
+
+/* desktop modal is #1c1c1e; the clip's background is pure black, so lighten-blend it (not used on the iPhone layout) */
+.wide .pgrid .pimg video{mix-blend-mode:lighten}

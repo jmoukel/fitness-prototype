@@ -248,16 +248,18 @@ const curPlan=()=>S.plans.find(p=>p.id===S.activePlan)||S.plans[0];
 const fmtClock=ms=>{const s=Math.max(0,Math.floor(ms/1000)),h=Math.floor(s/3600),m=Math.floor(s/60)%60,x=s%60;return (h?h+':'+String(m).padStart(2,'0'):m)+':'+String(x).padStart(2,'0')};
 
 /* ---------- exercise demo video (profile screen, only when e.demo is set) ---------- */
-const demoAttr=e=>e.demo?` data-demo="${ASSET}img/demo/${e.demo}"`:'';
-const demoBtn=e=>e.demo?'<div class="dplay" data-a="demoPlay" role="button" aria-label="Play demo"><svg class="i-play" viewBox="0 0 24 24"><path d="M8.5 5.6v12.8c0 .8.9 1.3 1.6.9l10-6.4c.6-.4.6-1.3 0-1.7l-10-6.4c-.7-.4-1.6.1-1.6.9z"/></svg><svg class="i-pause" viewBox="0 0 24 24"><rect x="6.5" y="5" width="3.6" height="14" rx="1.2"/><rect x="13.9" y="5" width="3.6" height="14" rx="1.2"/></svg></div>':'';
-function demoToggle(el){
-  const box=el.closest('.pimg');if(!box||!box.dataset.demo)return;
-  let v=box.querySelector('video');
-  if(!v){v=document.createElement('video');v.muted=true;v.defaultMuted=true;v.loop=true;v.playsInline=true;
-    v.setAttribute('playsinline','');v.setAttribute('muted','');v.setAttribute('webkit-playsinline','');v.setAttribute('data-a','demoPlay');
-    v.poster=box.dataset.demo+'.jpg?v=1';v.src=box.dataset.demo+'.mp4?v=1';
+/* iOS Safari: the <video> exists up front with muted/playsinline attributes, and play() is called synchronously inside the tap handler. */
+const demoBtn=e=>e.demo?`<video class="dvid" data-a="demoPlay" muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback poster="${ASSET}img/demo/${e.demo}.jpg?v=2" src="${ASSET}img/demo/${e.demo}.mp4?v=2"></video><div class="dplay" data-a="demoPlay" role="button" aria-label="Play demo"><svg class="i-play" viewBox="0 0 24 24"><path d="M8.5 5.6v12.8c0 .8.9 1.3 1.6.9l10-6.4c.6-.4.6-1.3 0-1.7l-10-6.4c-.7-.4-1.6.1-1.6.9z"/></svg><svg class="i-pause" viewBox="0 0 24 24"><rect x="6.5" y="5" width="3.6" height="14" rx="1.2"/><rect x="13.9" y="5" width="3.6" height="14" rx="1.2"/></svg></div>`:'';
+function demoToggle(el,ev){
+  if(ev){ev.stopPropagation();ev.preventDefault();}
+  const box=el.closest('.pimg'),v=box&&box.querySelector('video');if(!v)return;
+  v.muted=true;v.defaultMuted=true;v.playsInline=true;v.loop=true;
+  if(!v.__wired){v.__wired=true;
     v.addEventListener('playing',()=>box.classList.add('playing'));
-    box.insertBefore(v,box.firstChild);}
-  if(box.classList.contains('playing')||(!v.paused&&!v.ended)){v.pause();box.classList.remove('playing');}
-  else{v.currentTime=0;const p=v.play();if(p&&p.catch)p.catch(()=>{});}
+    v.addEventListener('pause',()=>box.classList.remove('playing'));
+    v.addEventListener('error',()=>{box.classList.remove('playing');console.warn('demo video error',v.error&&v.error.code)});}
+  if(!v.paused&&!v.ended){v.pause();try{v.currentTime=0}catch(_){}box.classList.remove('playing');return;}
+  const p=v.play();
+  if(p&&p.then)p.then(()=>box.classList.add('playing')).catch(err=>{console.warn('demo play() rejected',err&&err.name);box.classList.remove('playing');});
+  else box.classList.add('playing');
 }
