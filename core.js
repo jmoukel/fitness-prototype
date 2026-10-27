@@ -329,6 +329,8 @@ function demoToggle(el,ev){
 /* ---------- exercise switch: visual order + FLIP animation ---------- */
 function ordOf(o){const n=o.ex.length;if(!o.ord||o.ord.length!==n)o.ord=o.ex.map((_,i)=>i);return o.ord}
 function setCur(o,i){const old=o.cur;o.ord=[i,...ordOf(o).filter(k=>k!==i&&k!==old)];if(old!==i)o.ord.push(old);o.cur=i}
+function orderRows(o,isFin){const r=ordOf(o).filter(i=>i!==o.cur);return [...r.filter(i=>!isFin(o.ex[i])),...r.filter(i=>isFin(o.ex[i]))]}
+const exFin=e=>e.sets.every(s=>s.done),logFin=e=>e.sets.every(s=>s.done&&s.r>0);
 function flipSwitch(L,mutate){
   const q=()=>[...L.el.querySelectorAll('[data-k]')],H=e=>e.getBoundingClientRect().height;
   const first=new Map(q().map(e=>{const r=e.getBoundingClientRect();return [e.dataset.k,{top:r.top,h:r.height}]}));

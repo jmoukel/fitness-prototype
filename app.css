@@ -192,8 +192,8 @@ transform-origin:20% 0;transform:scale(.6);opacity:0;transition:transform .3s va
 .row2{background:var(--card);border-radius:18px;margin:0 16px 10px;padding:12px 14px;display:flex;align-items:center;gap:12px}
 .row2:active{opacity:.7}
 .row2 .ic{width:40px;height:40px;border-radius:10px}.row2 .n{font-size:17px;font-weight:600}.row2 .m{font-size:13px;color:var(--gray);font-variant-numeric:tabular-nums}
-.row2.fin .n{color:var(--gray)}.row2.fin .ic{opacity:.55}
-.row2 .chk{width:26px;height:26px;font-size:14px}
+.row2.fin .n{color:#aeaeb2}.row2.fin .ic{opacity:.55}
+.row2 .chk{width:22px;height:22px;font-size:12px}
 .rest{position:absolute;left:16px;right:16px;bottom:calc(var(--sab) + 10px);height:64px;border-radius:20px;background:#1c1c1e;display:flex;align-items:center;padding:0 16px;gap:12px;overflow:hidden;
 box-shadow:0 -6px 30px rgba(0,0,0,.7);transform:translateY(140%);transition:transform .4s var(--ease);border:.5px solid #2c2c2e}
 .rest.on{transform:none}

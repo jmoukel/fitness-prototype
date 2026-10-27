@@ -395,7 +395,7 @@ function liveHTML(L){
     return `<div class="st ${s.done?'dn':''} ${i===firstOpen?'on':''}"><span class="k">Set ${i+1}</span>
       <span class="val" data-a="setEdit" data-i="${i}">${bw?'':`<span class="${wCls}">${wTxt}</span> × `}<span class="${rCls}">${s.r}</span>${badge}</span>
       <div class="ckw" data-a="setTog" data-i="${i}"><div class="ck ${s.done?'y':i===firstOpen?'go':''}">${s.done?'✓':''}</div></div></div>`}).join('');
-  const others=ordOf(lv).map(i=>{if(i===lv.cur)return '';const e=lv.ex[i],x=LIB(e.exId),dn=e.sets.every(s=>s.done),cnt=e.sets.filter(s=>s.done).length;
+  const others=orderRows(lv,exFin).map(i=>{if(i===lv.cur)return '';const e=lv.ex[i],x=LIB(e.exId),dn=e.sets.every(s=>s.done),cnt=e.sets.filter(s=>s.done).length;
     return `<div class="row2 ${dn?'fin':''}" data-k="${i}" data-a="liveSwitch" data-i="${i}"><div class="ic" ${exBg(x)}></div><div class="t"><div class="n">${esc(x.name)}</div>
     <div class="m">${dn?'Done · ':cnt?cnt+' of '+e.sets.length+' sets · ':''}${wX(e.sets[0].tw)}${e.sets.map(s=>s.tr).join(' · ')}</div></div>${dn?'<div class="chk">✓</div>':'<span style="color:#48484a;font-size:20px">›</span>'}</div>`}).join('');
   const doneEx=lv.ex.filter(e=>e.sets.every(s=>s.done)).length;
@@ -422,9 +422,9 @@ function logHTML(L){
   const sub=e=>`${wX(e.sets[0].w)}${e.sets.map(s=>s.r||'—').join(' · ')}`;
   const curHead=`<div class="ch"><div class="ic" ${exBg(ex)}></div><div class="t"><div class="n">${esc(ex.name)}</div></div></div>`;
   const bar=`<div class="tb lg"><div class="fade" data-a="logCancel">Cancel</div><div class="tm">${esc(w.name)}</div><div class="fade logd" data-a="logDone">Done</div></div>`;
-  const row=(e,i)=>{const x=LIB(e.exId);return `<div class="row2" data-k="${i}" data-a="liveSwitch" data-i="${i}"><div class="ic" ${exBg(x)}></div><div class="t"><div class="n">${esc(x.name)}</div><div class="m">${sub(e)}</div></div><span style="color:#48484a;font-size:20px">›</span></div>`};
+  const row=(e,i)=>{const x=LIB(e.exId),dn=logFin(e);return `<div class="row2 ${dn?'fin':''}" data-k="${i}" data-a="liveSwitch" data-i="${i}"><div class="ic" ${exBg(x)}></div><div class="t"><div class="n">${esc(x.name)}</div><div class="m">${sub(e)}</div></div>${dn?'<div class="chk">✓</div>':'<span style="color:#48484a;font-size:20px">›</span>'}</div>`};
   const lab=`<div class="elab lg">${esc(L.when)}</div>`;
-  return bar.replace('@B@','tb')+`<div class="scroll">${lab}<div class="cur" data-k="${lg.cur}">${curHead}${sets}</div>${ordOf(lg).map(i=>i===lg.cur?'':row(lg.ex[i],i)).join('')}<div class="spacer"></div></div>`;
+  return bar.replace('@B@','tb')+`<div class="scroll">${lab}<div class="cur" data-k="${lg.cur}">${curHead}${sets}</div>${orderRows(lg,logFin).map(i=>row(lg.ex[i],i)).join('')}<div class="spacer"></div></div>`;
 }
 function afterLog(lv,setNowDone){
   const w=S.workouts[lv.wid],c=lv.ex[lv.cur];
